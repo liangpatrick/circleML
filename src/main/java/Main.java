@@ -2,6 +2,7 @@ import Agents.*;
 import Environment.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void runAll(){
@@ -153,10 +154,27 @@ public class Main {
     }
 
 
+
     public static void main (String args[]) {
-        runAll();
+//        runAll();
 
 
+
+
+
+
+//        policy.put(new State(0, 0 , 0), 0.0);
+//        for(State s: policy.keySet()){
+//            System.out.println(s);
+//            System.out.println(policy.get(s));
+//        }
+//        System.out.println(policy.get(new State(0, 0, 0)));
+//        HashMap<State, Double> a = policy.entrySet().stream()
+//                .collect(Collectors.toMap(e -> e.getKey(), e -> List.copyOf(e.getValue())));
+//
+//        System.out.println(a.get(new State(0, 0, 0)));
+//        policy.put(new State(0, 0 , 0), 1.0);
+//        System.out.println(a.get(new State(0, 0, 0)));
     }
 
 

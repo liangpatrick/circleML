@@ -26,7 +26,7 @@ public class CompleteInformation {
         while(true){
 //            hung
             if (count == 5000)
-                return new Result(false, false, false,false, count);
+                return new Result(false, false, false,false, count, count);
 //            creates arraylists of neighbors, predator distances, and prey distances
             ArrayList<Graph.Node> neighbors = maze.get(agent.getCell());
             ArrayList<Integer> predatorDistances = new ArrayList<>();
@@ -84,23 +84,23 @@ public class CompleteInformation {
             agent.setCell(random.get(rand));
 //            win
             if(agent.getCell() == prey.getCell()){
-                return new Result(false, true, false,false, 0);
+                return new Result(false, true, false,false, 0, count);
             }
             else if(agent.getCell() == predator.getCell()){
-                return new Result(false, false, true,false, 0);
+                return new Result(false, false, true,false, 0, count);
             }
 //          prey move
             prey.setCell(Prey.choosesNeighbors(prey.getCell(), maze));
 //            win
             if(agent.getCell() == prey.getCell()){
-                return new Result(false, false, false,true, 0);
+                return new Result(false, false, false,true, 0, count);
             }
 //            pred move
             List<Graph.Node> predatorNeighbors = maze.get(predator.getCell()).subList(1, maze.get(predator.getCell()).size());
             ArrayList<Integer> distances = new ArrayList<>();
 
             for(int x = 0; x < predatorNeighbors.size(); x++){
-                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent, maze);
+                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent.getCell(), maze);
                 distances.add(agentList.size());
             }
 //            randomly choose neighbor for ties
@@ -124,7 +124,7 @@ public class CompleteInformation {
             }
 //            dead
             if(agent.getCell() == predator.getCell()){
-                return new Result(true, false, false,false, 0);
+                return new Result(true, false, false,false, 0, count);
             }
 
             count++;
@@ -146,7 +146,7 @@ public class CompleteInformation {
         while(true){
 //            hung
             if (count == 5000)
-                return new Result(false, false, false,false, count);
+                return new Result(false, false, false,false, count, count);
             ArrayList<Graph.Node> neighbors = maze.get(agent.getCell());
             ArrayList<Graph.Node> preyNeighbors = maze.get(prey.getCell());
 
@@ -155,21 +155,21 @@ public class CompleteInformation {
             agent.setCell(cell);
 //            win
             if(agent.getCell() == prey.getCell()){
-                return new Result(false, true, false,false, 0);
+                return new Result(false, true, false,false, 0, count);
             } else if(agent.getCell() == predator.getCell())
-                return new Result(false, false, true,false, 0);
+                return new Result(false, false, true,false, 0, count);
 //          prey move
             prey.setCell(Prey.choosesNeighbors(prey.getCell(), maze));
 //            win
             if(agent.getCell() == prey.getCell()){
-                return new Result(false, false, false,true, 0);
+                return new Result(false, false, false,true, 0, count);
             }
 //            pred move
             List<Graph.Node> predatorNeighbors = maze.get(predator.getCell()).subList(1, maze.get(predator.getCell()).size());
             ArrayList<Integer> distances = new ArrayList<>();
 
             for(int x = 0; x < predatorNeighbors.size(); x++){
-                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent, maze);
+                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent.getCell(), maze);
                 distances.add(agentList.size());
             }
 //            randomly choose neighbor for ties
@@ -193,7 +193,7 @@ public class CompleteInformation {
             }
 //            dead
             if(agent.getCell() == predator.getCell()){
-                return new Result(true, false, false,false, 0);
+                return new Result(true, false, false,false, 0, count);
             }
 
             count++;

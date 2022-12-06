@@ -22,7 +22,7 @@ public class Predator {
         this.cell = cell;
     }
 //    finds shortest path
-    public static List<Graph.Node> bfs(int start, Agent agent, ArrayList<ArrayList<Graph.Node>> maze){
+    public static List<Graph.Node> bfs(int start, int agent, ArrayList<ArrayList<Graph.Node>> maze){
 //      fringe to store cells that need to be visited
         Queue<Graph.Node> fringe = new LinkedList<>();
         HashSet<Integer> visited = new HashSet<Integer>();
@@ -35,7 +35,7 @@ public class Predator {
             Graph.Node curr = fringe.poll();
             int ind = curr.getCell();
 //          if arrived at destination
-            if (agent.getCell() == ind) {
+            if (agent == ind) {
                 List<Graph.Node> path = new ArrayList<>();
                 getPath(curr, path);
                 return path;

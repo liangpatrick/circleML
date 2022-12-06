@@ -25,7 +25,7 @@ public class PartialPrey {
         while(true){
 //            hung
             if (count == 5000)
-                return new Result(false, false, false,false, surveyRate/(double)count, count);
+                return new Result(false, false, false,false, surveyRate/(double)count, count, count);
 //            creates arraylists of neighbors, predator distances, and prey distances
             ArrayList<Graph.Node> neighbors = maze.get(agent.getCell());
             ArrayList<Integer> predatorDistances = new ArrayList<>();
@@ -96,10 +96,10 @@ public class PartialPrey {
             agent.setCell(random.get(rand));
 //            win
             if(agent.getCell() == prey.getCell()){
-                return new Result(false, true, false,false, surveyRate/((double)count + 1), 0);
+                return new Result(false, true, false,false, surveyRate/((double)count + 1), 0, count);
             }
             else if(agent.getCell() == predator.getCell())
-                return new Result(false, false, true,false, surveyRate/((double)count + 1), 0);
+                return new Result(false, false, true,false, surveyRate/((double)count + 1), 0, count);
 //            updates beliefs
             bayes(false,  agent.getCell());
             normalize();
@@ -108,7 +108,7 @@ public class PartialPrey {
             prey.setCell(Prey.choosesNeighbors(prey.getCell(), maze));
 //            win
             if(agent.getCell() == prey.getCell()){
-                return new Result(false, false, false,true, surveyRate/((double)count + 1), 0);
+                return new Result(false, false, false,true, surveyRate/((double)count + 1), 0, count);
             }
 //            belief distribution
             matmul();
@@ -121,7 +121,7 @@ public class PartialPrey {
             ArrayList<Integer> distances = new ArrayList<>();
 
             for(int x = 0; x < predatorNeighbors.size(); x++){
-                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent, maze);
+                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent.getCell(), maze);
                 distances.add(agentList.size());
             }
 //            randomly choose neighbor for ties
@@ -145,7 +145,7 @@ public class PartialPrey {
             }
 //            dead
             if(agent.getCell() == predator.getCell()){
-                return new Result(true, false, false,false, surveyRate/((double)count + 1), 0);
+                return new Result(true, false, false,false, surveyRate/((double)count + 1), 0, count);
             }
 
 
@@ -171,7 +171,7 @@ public class PartialPrey {
         while(true){
 //            hung
             if (count == 5000)
-                return new Result(false, false, false,false, surveyRate/(double)count, count);
+                return new Result(false, false, false,false, surveyRate/(double)count, count, count);
 //            creates arraylists of neighbors, predator distances, and prey distances
             ArrayList<Graph.Node> neighbors = maze.get(agent.getCell());
 
@@ -194,17 +194,17 @@ public class PartialPrey {
 //            win
             if(agent.getCell() == prey.getCell()){
                 surveyRate++;
-                return new Result(false, true, false,false, surveyRate/((double)count + 1), 0);
+                return new Result(false, true, false,false, surveyRate/((double)count + 1), 0, count);
             }
             else if(agent.getCell() == predator.getCell())
-                return new Result(false, false, true,false, surveyRate/((double)count + 1), 0);
+                return new Result(false, false, true,false, surveyRate/((double)count + 1), 0, count);
             bayes(false,  agent.getCell());
             normalize();
 //          prey move
             prey.setCell(Prey.choosesNeighbors(prey.getCell(), maze));
 //            win
             if(agent.getCell() == prey.getCell()){
-                return new Result(false, false, false,true, surveyRate/((double)count + 1), 0);
+                return new Result(false, false, false,true, surveyRate/((double)count + 1), 0, count);
             }
 //            distributes beliefs
             matmul();
@@ -219,7 +219,7 @@ public class PartialPrey {
             ArrayList<Integer> distances = new ArrayList<>();
 
             for(int x = 0; x < predatorNeighbors.size(); x++){
-                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent, maze);
+                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent.getCell(), maze);
                 distances.add(agentList.size());
             }
 //            randomly choose neighbor for ties
@@ -243,7 +243,7 @@ public class PartialPrey {
             }
 //            dead
             if(agent.getCell() == predator.getCell()){
-                return new Result(true, false, false,false, surveyRate/((double)count + 1), 0);
+                return new Result(true, false, false,false, surveyRate/((double)count + 1), 0, count);
             }
 
             count++;

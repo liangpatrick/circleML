@@ -40,9 +40,11 @@ public class Ustar {
                 }
             }
 
-            System.out.println("Agent Actions: " + getNextAgentStates(agent.getCell()));
-            System.out.println("Prey Actions: " + getNextPreyStates(prey.getCell()));
-            System.out.println("Predator Actions: " + getNextPredatorStates(predator.getCell()));
+//            System.out.println("Agent Actions: " + getNextAgentStates(agent.getCell()));
+//            System.out.println("Prey Actions: " + getNextPreyStates(prey.getCell()));
+//            System.out.println("Predator Actions: " + getNextPredatorStates(predator.getCell()));
+
+//            attempts to get out of trap
             if (cell == -1){
                 ArrayList<Integer> distances = new ArrayList<>();
                 for(int x = 0; x < neighbors.size(); x++){
@@ -64,7 +66,7 @@ public class Ustar {
             }else {
                 agent.setCell(cell);
             }
-            System.out.println("Agent Moved: " + agent.getCell());
+//            System.out.println("Agent Moved: " + agent.getCell());
 //            win
             if(agent.getCell() == prey.getCell()){
                 return new Result(false, true, false,false, 0, count);
@@ -338,7 +340,7 @@ public class Ustar {
     static void policyIter(){
         ustar = initU(ustar);
 //        how close the original ustar and the new policy should be
-        double convergence = 1.0 / Math.pow(10, 3);
+        double convergence = 1.0 / Math.pow(10, 8);
 //        keeps track of time
         long total = System.nanoTime();
 //        keeps track of iter
@@ -466,7 +468,7 @@ public class Ustar {
     static void policyIterPartial(){
         ustarPartial = initU(ustarPartial);
 //        how close the original ustar and the new policy should be
-        double convergence = 1.0 / Math.pow(10, 3);
+        double convergence = 1.0 / Math.pow(10, 8);
 //        keeps track of time
         long total = System.nanoTime();
 //        keeps track of iter
@@ -701,7 +703,7 @@ public class Ustar {
             if (resultOne.predatorCatchesAgent) {
 //                    predator catches agent
                 predatorSuccess[1]++;
-                System.out.println("DEATH");
+//                System.out.println("DEATH");
 
             }
             else if (resultOne.agentCatchesPrey) {

@@ -221,7 +221,7 @@ public class Ustar {
         return arr;
     }
 
-//    return arraylist of all possible states for current position
+//    return array slist of all possible states for current position
     static ArrayList<State> getNextStates(int agent, int prey, int predator){
         ArrayList<State> states = new ArrayList<State>();
         List<Graph.Node> agentStates = getNextAgentStates(agent);
@@ -236,9 +236,9 @@ public class Ustar {
         }
         return states;
     }
-//    return list of possible agent actions
-    static List<Graph.Node> getNextAgentStates(int agent){
-        return globalMaze.get(agent).subList(1, globalMaze.get(agent).size());
+//    return array list of possible agent actions
+    static ArrayList<Graph.Node> getNextAgentStates(int agent){
+        return globalMaze.get(agent);
     }
 //    return array list of prey neighbors
     static ArrayList<Graph.Node> getNextPreyStates(int prey){

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="agent can now stay in place">
+    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="commented out print statement and updated convergence factor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Agents/Ustar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Agents/Ustar.java" afterDir="false" />
     </list>
@@ -77,7 +77,7 @@
       <updated>1669687700709</updated>
       <workItem from="1669687702405" duration="276000" />
       <workItem from="1669688014148" duration="160000" />
-      <workItem from="1669688185489" duration="160521000" />
+      <workItem from="1669688185489" duration="174662000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <created>1669688715959</created>
@@ -107,7 +107,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670290332947</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="updated complete ustar and started partial ustar">
+      <created>1670299469306</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1670299469306</updated>
+    </task>
+    <task id="LOCAL-00006" summary="commented out print statement and updated convergence factor">
+      <created>1670299629244</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1670299629244</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -128,6 +142,8 @@
     <MESSAGE value="initial" />
     <MESSAGE value="Ustar complete is done" />
     <MESSAGE value="agent can now stay in place" />
-    <option name="LAST_COMMIT_MESSAGE" value="agent can now stay in place" />
+    <MESSAGE value="updated complete ustar and started partial ustar" />
+    <MESSAGE value="commented out print statement and updated convergence factor" />
+    <option name="LAST_COMMIT_MESSAGE" value="commented out print statement and updated convergence factor" />
   </component>
 </project>

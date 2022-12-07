@@ -7,7 +7,6 @@ import java.util.*;
 public class Ustar {
 
     static HashMap<State, Double> ustar = new HashMap<>();
-    static HashMap<State, Double> ustarPartial = new HashMap<>();
     static ArrayList<ArrayList<Graph.Node>> globalMaze = new ArrayList<>();
 
     static double[] belief = new double[50];
@@ -28,6 +27,7 @@ public class Ustar {
 
 
             List<Graph.Node> neighbors = getNextAgentStates(agent.getCell());
+
             int cell = -1;
             double value = Double.NEGATIVE_INFINITY;
             for(Graph.Node n: neighbors){
@@ -39,10 +39,6 @@ public class Ustar {
                     value = currUtil;
                 }
             }
-
-//            System.out.println("Agent Actions: " + getNextAgentStates(agent.getCell()));
-//            System.out.println("Prey Actions: " + getNextPreyStates(prey.getCell()));
-//            System.out.println("Predator Actions: " + getNextPredatorStates(predator.getCell()));
 
 //            attempts to get out of trap
             if (cell == -1){
@@ -66,7 +62,7 @@ public class Ustar {
             }else {
                 agent.setCell(cell);
             }
-//            System.out.println("Agent Moved: " + agent.getCell());
+
 //            win
             if(agent.getCell() == prey.getCell()){
                 return new Result(false, true, false,false, 0, count);
@@ -117,6 +113,126 @@ public class Ustar {
 
     }
 
+    static double updateValues(int agent, int prey, int predator){
+//        all possible states
+        ArrayList<State> states = getNextStates(agent, prey, predator);
+//        init value
+        double currValue = 0.0;
+        double maxValue = Double.NEGATIVE_INFINITY;
+//        used to keep track of what action it is on
+        int prevAction = -1;
+
+//        predator neighbors
+        List<Graph.Node> predatorNeighbors = getNextPredatorStates(predator);
+
+//      finds count of shortest paths from predator to agent
+        ArrayList<Integer> distances = new ArrayList<>();
+        for(int x = 0; x < predatorNeighbors.size(); x++){
+            List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent, globalMaze);
+            distances.add(agentList.size());
+        }
+        int min = Collections.min(distances);
+        ArrayList<Integer> indices = new ArrayList<>();
+        for(int x = 0; x < distances.size(); x++){
+            if (distances.get(x) == min){
+                indices.add(predatorNeighbors.get(x).getCell());
+            }
+        }
+
+
+//      goes through all possible states
+        for(State state: states){
+//            init prevAction
+            if (prevAction == -1) {
+                prevAction = state.getAgent();
+            }
+//            if its a new action, update maxValue
+            if (prevAction != state.getAgent()) {
+                maxValue = Math.max(maxValue, currValue);
+                currValue = 0.0;
+            }
+
+//            ArrayList<Integer> distances = new ArrayList<>();
+//            for(int x = 0; x < predatorNeighbors.size(); x++){
+//                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), state.getAgent(), globalMaze);
+//                distances.add(agentList.size());
+//            }
+//            int min = Collections.min(distances);
+//            ArrayList<Integer> indices = new ArrayList<>();
+//            for(int x = 0; x < distances.size(); x++){
+//                if (distances.get(x) == min){
+//                    indices.add(predatorNeighbors.get(x).getCell());
+//                }
+//            }
+
+//              If its a shortest path for predator, different probability
+            if(indices.contains(state.getPredator())) {
+                    currValue += (ustar.get(state) * ((1.0 / getNextPreyStates(prey).size()) * ((0.6 / indices.size()) + (0.4 / getNextPredatorStates(predator).size()))));
+            }
+            else {
+                    currValue += (ustar.get(state) * ((1.0 / getNextPreyStates(prey).size()) * (0.4 / getNextPredatorStates(predator).size())));
+            }
+            prevAction = state.getAgent();
+        }
+
+//      one last max
+        maxValue = Math.max(maxValue, currValue);
+        return -1.0 + maxValue;
+    }
+
+//    goes through all states and updates values
+    static HashMap<State, Double> updateStates(){
+        HashMap<State, Double> temp = new HashMap<>();
+        for(int agent = 0; agent < 50; agent++){
+            for(int prey = 0; prey < 50; prey++){
+                for(int predator = 0; predator < 50; predator++){
+//                    base cases
+                    if(agent == predator && prey != agent)
+                        temp.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
+                    else if(agent == prey)
+                        temp.put(new State(agent, prey, predator), 0.0);
+                    else if(Predator.bfs(agent, predator, globalMaze).size() == 2)
+                        temp.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
+                    else if(Predator.bfs(agent, prey, globalMaze).size() == 2)
+                        temp.put(new State(agent, prey, predator), -1.0);
+                    else
+                        temp.put(new State(agent, prey, predator), updateValues(agent, prey, predator));
+                }
+            }
+        }
+        return temp;
+    }
+
+    static void policyIter(){
+        ustar = initU(ustar);
+//        how close the original ustar and the new policy should be
+        double convergence = 1.0 / Math.pow(10, 3);
+//        keeps track of time
+        long total = System.nanoTime();
+//        keeps track of iter
+        int count = 1;
+        while(true){
+//            returns new policy
+            HashMap<State, Double> policy = updateStates();
+//            greatest difference between new policy and current ustar
+            double difference = Collections.max(differences(ustar, policy));
+//            updates ustar
+            ustar = copyMap(policy);
+            long endTime = System.nanoTime();
+            long duration = (endTime - total)/(long)Math.pow(10,9);
+            System.out.println("Policy Iter: " + count++ + "; Time: " + duration + "; Difference: " + difference);
+//            if the largest difference between old ustar and policy qualify, policy is optimal
+            if(difference < convergence){
+                break;
+            }
+        }
+
+        long endTime = System.nanoTime();
+        long duration = (endTime - total)/(long)Math.pow(10,9);
+        System.out.println("Total Time: " + duration);
+
+    }
+
     public static Result partial(ArrayList<ArrayList<Graph.Node>> maze){
 //        initializes all player positions
         Agent agent = new Agent();
@@ -124,7 +240,7 @@ public class Ustar {
         Predator predator = new Predator(agent);
         initTransMatrix(maze);
         initialBelief(agent.getCell());
-
+//        policyIterPartial();
         int count = 0;
         double surveyRate = 0;
 //        will return only when Agent dies or succeeds
@@ -133,30 +249,35 @@ public class Ustar {
             if (count == 5000)
                 return new Result(false, false, false,false, surveyRate/(double)count, count, count);
 
+
+
 //            random survey
             int surveyedNode = randomSurvey();
             if(prey.getCell() == surveyedNode){
                 bayes(true, prey.getCell());
+                surveyRate++;
             } else {
                 bayes(false, surveyedNode);
             }
 //            update beliefs
             normalize();
 
+            HashMap<State, Double> ustar = updateStatesPartial(agent.getCell(), predator.getCell());
 
-//            calls utility function
             List<Graph.Node> neighbors = getNextAgentStates(agent.getCell());
-            int cell = neighbors.get(0).getCell();
+
+            int cell = -1;
             double value = Double.NEGATIVE_INFINITY;
             for(Graph.Node n: neighbors){
-//                if(ustarPartial.get(new State(n.getCell(), prey.getCell(), predator.getCell())) == null || Double.isInfinite(ustarPartial.get(new State(n.getCell(), prey.getCell(), predator.getCell()))) || Double.isNaN(ustarPartial.get(new State(n.getCell(), prey.getCell(), predator.getCell()))))
-//                    continue;
-                double currUtil = ustarPartial.get(new State(n.getCell(), prey.getCell(), predator.getCell()));
+                if(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell())) == null || Double.isInfinite(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))) || Double.isNaN(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))))
+                    continue;
+                double currUtil = ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()));
                 if(value < currUtil){
                     cell = n.getCell();
                     value = currUtil;
                 }
             }
+
 
             if (cell == -1){
                 ArrayList<Integer> distances = new ArrayList<>();
@@ -197,11 +318,6 @@ public class Ustar {
             }
 //            distributes beliefs
             matmul();
-//            normalize();
-
-
-
-
 
 //            pred move
             List<Graph.Node> predatorNeighbors = maze.get(predator.getCell()).subList(1, maze.get(predator.getCell()).size());
@@ -242,34 +358,14 @@ public class Ustar {
 
     }
 
-
-
-    static double updateValues(int agent, int prey, int predator){
+    static double updateValuesPartial(int agent, int predator){
 //        all possible states
-        ArrayList<State> states = getNextStates(agent, prey, predator);
+        ArrayList<State> states = getNextPartialStates(agent, predator);
 //        init value
         double currValue = 0.0;
         double maxValue = Double.NEGATIVE_INFINITY;
 //        used to keep track of what action it is on
         int prevAction = -1;
-
-//        predator neighbors
-        List<Graph.Node> predatorNeighbors = getNextPredatorStates(predator);
-
-//      finds count of shortest paths from predator to agent
-        ArrayList<Integer> distances = new ArrayList<>();
-        for(int x = 0; x < predatorNeighbors.size(); x++){
-            List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent, globalMaze);
-            distances.add(agentList.size());
-        }
-        int min = Collections.min(distances);
-        ArrayList<Integer> indices = new ArrayList<>();
-        for(int x = 0; x < distances.size(); x++){
-            if (distances.get(x) == min){
-                indices.add(predatorNeighbors.get(x).getCell());
-            }
-        }
-
 
 //      goes through all possible states
         for(State state: states){
@@ -279,185 +375,46 @@ public class Ustar {
             }
 //            if its a new action, update maxValue
             if (prevAction != state.getAgent()) {
-                maxValue = Math.max(maxValue, -1.0+ currValue);
+//                System.out.println(currValue);
+                maxValue = Math.max(maxValue, currValue);
                 currValue = 0.0;
             }
 
-//            ArrayList<Integer> distances = new ArrayList<>();
-//            for(int x = 0; x < predatorNeighbors.size(); x++){
-//                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), state.getAgent(), globalMaze);
-//                distances.add(agentList.size());
-//            }
-//            int min = Collections.min(distances);
-//            ArrayList<Integer> indices = new ArrayList<>();
-//            for(int x = 0; x < distances.size(); x++){
-//                if (distances.get(x) == min){
-//                    indices.add(predatorNeighbors.get(x).getCell());
-//                }
-//            }
-//              If its a shortest path for predator, different probability
-            if(indices.contains(state.getPredator())) {
-                    currValue += (ustar.get(new State(state.getAgent(), state.getPrey(), state.getPredator())) * ((1.0 / getNextPreyStates(prey).size()) * ((0.6 / indices.size()) + (0.4 / getNextPredatorStates(predator).size()))));
+
+            if(belief[state.getPrey()] > 0) {
+                currValue += belief[state.getPrey()] * ustar.get(state);
             }
-            else {
-                    currValue += (ustar.get(new State(state.getAgent(), state.getPrey(), state.getPredator())) * ((1.0 / getNextPreyStates(prey).size()) * (0.4 / getNextPredatorStates(predator).size())));
-            }
-            prevAction = state.getAgent();
-        }
-
-//      one last max
-        maxValue = Math.max(maxValue, -1.0 + currValue);
-        return maxValue;
-    }
-
-
-//    goes through all states and updates values
-    static HashMap<State, Double> updateStates(){
-        HashMap<State, Double> temp = new HashMap<>();
-        for(int agent = 0; agent < 50; agent++){
-            for(int prey = 0; prey < 50; prey++){
-                for(int predator = 0; predator < 50; predator++){
-//                    base cases
-                    if(agent == predator && prey != agent)
-                        temp.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
-                    else if(agent == prey)
-                        temp.put(new State(agent, prey, predator), 0.0);
-                    else if(Predator.bfs(agent, predator, globalMaze).size() == 2)
-                        temp.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
-                    else if(Predator.bfs(agent, prey, globalMaze).size() == 2)
-                        temp.put(new State(agent, prey, predator), -1.0);
-                    else
-                        temp.put(new State(agent, prey, predator), updateValues(agent, prey, predator));
-
-//                    System.out.println(temp.get(new State(agent, prey, predator)));
-
-                }
-            }
-        }
-        return temp;
-    }
-
-    static void policyIter(){
-        ustar = initU(ustar);
-//        how close the original ustar and the new policy should be
-        double convergence = 1.0 / Math.pow(10, 8);
-//        keeps track of time
-        long total = System.nanoTime();
-//        keeps track of iter
-        int count = 1;
-        while(true){
-//            returns new policy
-            HashMap<State, Double> policy = updateStates();
-//            greatest difference between new policy and current ustar
-            double difference = Collections.max(differences(ustar, policy));
-//            updates ustar
-            ustar = copyMap(policy);
-            long endTime = System.nanoTime();
-            long duration = (endTime - total)/(long)Math.pow(10,9);
-            System.out.println("Policy Iter: " + count++ + "; Time: " + duration + "; Difference: " + difference);
-//            if the largest difference between old ustar and policy qualify, policy is optimal
-            if(difference < convergence){
-                break;
-            }
-        }
-
-        long endTime = System.nanoTime();
-        long duration = (endTime - total)/(long)Math.pow(10,9);
-        System.out.println("Total Time: " + duration);
-
-    }
-
-    static double updateValuesPartial(int agent, int prey, int predator){
-//        all possible states
-        ArrayList<State> states = getNextStates(agent, prey, predator);
-//        init value
-        double currValue = 0.0;
-        double maxValue = Double.NEGATIVE_INFINITY;
-//        used to keep track of what action it is on
-        int prevAction = -1;
-
-//        predator neighbors
-        List<Graph.Node> predatorNeighbors = getNextPredatorStates(predator);
-
-//      finds count of shortest paths from predator to agent
-        ArrayList<Integer> distances = new ArrayList<>();
-        for(int x = 0; x < predatorNeighbors.size(); x++){
-            List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), agent, globalMaze);
-            distances.add(agentList.size());
-        }
-        int min = Collections.min(distances);
-        ArrayList<Integer> indices = new ArrayList<>();
-        for(int x = 0; x < distances.size(); x++){
-            if (distances.get(x) == min){
-                indices.add(predatorNeighbors.get(x).getCell());
-            }
-        }
-
-
-//      goes through all possible states
-        for(State state: states){
-//            init prevAction
-            if (prevAction == -1) {
-                prevAction = state.getAgent();
-            }
-//            if its a new action, update maxValue
-            if (prevAction != state.getAgent()) {
-                maxValue = Math.max(maxValue, -1.0+ currValue);
-                currValue = 0.0;
-            }
-
-//            ArrayList<Integer> distances = new ArrayList<>();
-//            for(int x = 0; x < predatorNeighbors.size(); x++){
-//                List<Graph.Node> agentList = Predator.bfs(predatorNeighbors.get(x).getCell(), state.getAgent(), globalMaze);
-//                distances.add(agentList.size());
-//            }
-//            int min = Collections.min(distances);
-//            ArrayList<Integer> indices = new ArrayList<>();
-//            for(int x = 0; x < distances.size(); x++){
-//                if (distances.get(x) == min){
-//                    indices.add(predatorNeighbors.get(x).getCell());
-//                }
-//            }
-//              If its a shortest path for predator, different probability
-//            if(indices.contains(state.getPredator())) {
-//                currValue += belief[state.getPrey()]*(ustar.get(new State(state.getAgent(), state.getPrey(), state.getPredator())) * ((1.0 / getNextPreyStates(prey).size()) * ((0.6 / indices.size()) + (0.4 / getNextPredatorStates(predator).size()))));
-//            }
-//            else {
-//                currValue += belief[state.getPrey()]*(ustar.get(new State(state.getAgent(), state.getPrey(), state.getPredator())) * ((1.0 / getNextPreyStates(prey).size()) * (0.4 / getNextPredatorStates(predator).size())));
-//            }
-
-            currValue += belief[state.getPrey()]*(ustar.get(new State(state.getAgent(), state.getPrey(), state.getPredator())));
-
-
 
             prevAction = state.getAgent();
         }
 
 //      one last max
-        maxValue = Math.max(maxValue, -1.0 + currValue);
-        return maxValue;
+        maxValue = Math.max(maxValue, currValue);
+        return -1.0 + maxValue;
     }
 
 
     //    goes through all states and updates values
-    static HashMap<State, Double> updateStatesPartial(){
+    static HashMap<State, Double> updateStatesPartial(int agentCell, int predatorCell){
         HashMap<State, Double> temp = new HashMap<>();
-        for(int agent = 0; agent < 50; agent++){
-            for(int prey = 0; prey < 50; prey++){
-                for(int predator = 0; predator < 50; predator++){
-//                    base cases
-                    if(agent == predator&& prey != agent)
-                        temp.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
-                    else if(agent == prey)
-                        temp.put(new State(agent, prey, predator), 0.0);
-                    else if(Predator.bfs(agent, predator, globalMaze).size() == 2)
-                        temp.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
-                    else if(Predator.bfs(agent, prey, globalMaze).size() == 2)
-                        temp.put(new State(agent, prey, predator), -1.0);
-                    else
-                        temp.put(new State(agent, prey, predator), updateValuesPartial(agent, prey, predator));
+        List<Graph.Node> agents = getNextAgentStates(agentCell);
+        List<Graph.Node> predators = getNextPredatorStates(predatorCell);
+//        List<Integer> preys = getNextPartialPreyStates();
+        for(int agent = 0; agent < agents.size(); agent++){
 
-//                    System.out.println(temp.get(new State(agent, prey, predator)));
+            for(int predator = 0; predator < predators.size(); predator++){
+                for(int prey = 0; prey < 50; prey++){
+//                    base cases
+                    if(agents.get(agent).getCell() == predatorCell && prey != agents.get(agent).getCell())
+                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), Double.NEGATIVE_INFINITY);
+                    else if(agents.get(agent).getCell() == prey)
+                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), 0.0);
+                    else if(Predator.bfs(agents.get(agent).getCell(), predatorCell, globalMaze).size() == 2)
+                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), Double.NEGATIVE_INFINITY);
+                    else if(Predator.bfs(agents.get(agent).getCell(), prey, globalMaze).size() == 2)
+                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), -1.0);
+                    else
+                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), updateValuesPartial(agentCell, predatorCell));
 
                 }
             }
@@ -465,35 +422,6 @@ public class Ustar {
         return temp;
     }
 
-    static void policyIterPartial(){
-        ustarPartial = initU(ustarPartial);
-//        how close the original ustar and the new policy should be
-        double convergence = 1.0 / Math.pow(10, 8);
-//        keeps track of time
-        long total = System.nanoTime();
-//        keeps track of iter
-        int count = 1;
-        while(true){
-//            returns new policy
-            HashMap<State, Double> policy = updateStatesPartial();
-//            greatest difference between new policy and current ustar
-            double difference = Collections.max(differences(ustarPartial, policy));
-//            updates ustar
-            ustarPartial = copyMap(policy);
-            long endTime = System.nanoTime();
-            long duration = (endTime - total)/(long)Math.pow(10,9);
-            System.out.println("Policy Iter: " + count++ + "; Time: " + duration + "; Difference: " + difference);
-//            if the largest difference between old ustar and policy qualify, policy is optimal
-            if(difference < convergence){
-                break;
-            }
-        }
-
-        long endTime = System.nanoTime();
-        long duration = (endTime - total)/(long)Math.pow(10,9);
-        System.out.println("Total Time: " + duration);
-
-    }
 
 
 //    initializes ustar
@@ -533,6 +461,21 @@ public class Ustar {
         }
         return states;
     }
+
+    //    return array slist of all possible states for current position
+    static ArrayList<State> getNextPartialStates(int agent, int predator){
+        ArrayList<State> states = new ArrayList<State>();
+        List<Graph.Node> agentStates = getNextAgentStates(agent);
+        List<Graph.Node> predatorStates = getNextPredatorStates(predator);
+        for(int agentPos = 0; agentPos < agentStates.size(); agentPos++){
+            for(int preyPos = 0; preyPos < 50; preyPos++){
+                for(int predatorPos = 0; predatorPos < predatorStates.size(); predatorPos++){
+                        states.add(new State(agentStates.get(agentPos).getCell(), preyPos, predatorStates.get(predatorPos).getCell()));
+                }
+            }
+        }
+        return states;
+    }
 //    return array list of possible agent actions
     static List<Graph.Node> getNextAgentStates(int agent){
         return globalMaze.get(agent).subList(1, globalMaze.get(agent).size());
@@ -541,10 +484,11 @@ public class Ustar {
     static ArrayList<Graph.Node> getNextPreyStates(int prey){
         return globalMaze.get(prey);
     }
-//    return array list of predator neighbors
+
     static List<Graph.Node> getNextPredatorStates(int predator){
         return globalMaze.get(predator).subList(1, globalMaze.get(predator).size());
     }
+
 //    deep copy of hashmap
     static HashMap<State, Double> copyMap(HashMap<State, Double> temp){
         HashMap<State, Double> copy = new HashMap<>();
@@ -553,6 +497,7 @@ public class Ustar {
         }
         return copy;
     }
+
 //    returns array list of differences between original ustar and new one
     public static ArrayList<Double> differences(HashMap<State, Double> ustar, HashMap<State, Double> policy){
         ArrayList<Double> differences = new ArrayList<>();
@@ -569,7 +514,6 @@ public class Ustar {
         }
         return differences;
     }
-
 
     //    updates belief when new node is surveyed
     public static void bayes(boolean found, int cell){
@@ -596,7 +540,6 @@ public class Ustar {
             }
         }
     }
-
 
     //  returns greatest probability in belief; used in conjunction with maxIndex
     public static double maxBelief(){
@@ -661,19 +604,16 @@ public class Ustar {
 
     }
 
-
-
     //    dot product to update belief with transMatrix
     public static double dotProduct(int row, double[] temp) {
         double sum = 0;
         for (int x = 0; x < 50; x++) {
             sum += transMatrix[x][row] * temp[x];
-
         }
-
         return sum;
 
     }
+
     //    normalizes values
     public static void normalize(){
         double sum = beliefSum(belief);
@@ -682,15 +622,13 @@ public class Ustar {
         }
     }
 
-
-
-
-
-
     public static void run(){
+
+
+//        keeps track of iter
         globalMaze = Graph.buildGraph();
+        long total = System.nanoTime();
         policyIter();
-        policyIterPartial();
         int[] agentSuccess           = new int[3];
         int[] hung                   = new int[3];
         int[] predatorSuccess        = new int[3];
@@ -723,6 +661,9 @@ public class Ustar {
                 hung[1]++;
             }
             steps[1] += resultOne.steps;
+
+
+
             Result resultTwo = partial(globalMaze);
             if (resultTwo.predatorCatchesAgent) {
 //                    predator catches agent
@@ -744,11 +685,23 @@ public class Ustar {
 //                    hung
                 hung[2]++;
             }
+            preySurveyRate[2] += resultTwo.surveyRate;
             steps[2] += resultTwo.steps;
 
-            System.out.println();
+
+
+//
+            long endTime = System.nanoTime();
+            long duration = (endTime - total)/(long)Math.pow(10,9);
+            System.out.println("Iter: " + x + "; Time: " +duration );
+
+
+//            System.out.println();
 
         }
+        long endTime = System.nanoTime();
+        long duration = (endTime - total)/(long)Math.pow(10,9);
+        System.out.println("Total Time: " + duration);
         for(int x = 1; x < agentSuccess.length; x++){
             System.out.println("U*: " + ((agentSuccess[x] + preyDeath[x])/3000.0) * 100);
             System.out.println("Predator Catches Agent: " + predatorSuccess[x]);
@@ -757,7 +710,7 @@ public class Ustar {
             System.out.println("Prey Runs into Agent: " + preyDeath[x]);
             System.out.println("Agent Runs into Predator: " + agentFail[x]);
             System.out.println("Average number of steps: " + steps[x]/3000.0);
-            System.out.println("Average Prey Survey Rate: " + ((preySurveyRate[x] / 3000.0 )* 100));
+            System.out.println("Average Prey Survey Rate: " + ((preySurveyRate[x] / 3000.0 ) * 100));
             System.out.println("Hung out of Loss: " + (double)hung[x]/((double)predatorSuccess[x] + agentFail[x]+hung[x]));
             System.out.println();
         }

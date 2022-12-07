@@ -1,11 +1,13 @@
 package Environment;
 import org.apache.commons.lang3.builder.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Graph {
+public class Graph implements Serializable {
 //    Used for each cell in graph
-    public static class Node{
+    public static class Node implements Serializable{
 //        used during bfs
         public Node prev;
 //        cell number; 0-49

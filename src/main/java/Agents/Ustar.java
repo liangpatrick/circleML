@@ -1,6 +1,7 @@
 package Agents;
 import Environment.*;
 
+import java.io.*;
 import java.util.*;
 
 
@@ -197,6 +198,7 @@ public class Ustar {
                         temp.put(new State(agent, prey, predator), -1.0);
                     else
                         temp.put(new State(agent, prey, predator), updateValues(agent, prey, predator));
+//                    System.out.println(temp.get(new State(agent, prey, predator)));
                 }
             }
         }
@@ -448,7 +450,7 @@ public class Ustar {
 
 //    return array slist of all possible states for current position
     static ArrayList<State> getNextStates(int agent, int prey, int predator){
-        ArrayList<State> states = new ArrayList<State>();
+        ArrayList<State> states = new ArrayList<>();
         List<Graph.Node> agentStates = getNextAgentStates(agent);
         ArrayList<Graph.Node> preyStates = getNextPreyStates(prey);
         List<Graph.Node> predatorStates = getNextPredatorStates(predator);
@@ -456,6 +458,7 @@ public class Ustar {
             for(int preyPos = 0; preyPos < preyStates.size(); preyPos++){
                 for(int predatorPos = 0; predatorPos < predatorStates.size(); predatorPos++){
                     states.add(new State(agentStates.get(agentPos).getCell(), preyStates.get(preyPos).getCell(), predatorStates.get(predatorPos).getCell()));
+//                    states.add(new State(agent, preyStates.get(preyPos).getCell(), predatorStates.get(predatorPos).getCell()));
                 }
             }
         }
@@ -622,9 +625,77 @@ public class Ustar {
         }
     }
 
+
+    public static void oneHotEncoder(){
+        ArrayList<ArrayList<Integer>> states = new ArrayList<>();
+        ArrayList<Double> values = new ArrayList<>();
+        for(int agentP = 0; agentP < 50; agentP++) {
+            for (int preyP = 0; preyP < 50; preyP++) {
+                for (int predatorP = 0; predatorP < 50; predatorP++) {
+                    State state = new State(agentP, preyP, predatorP);
+                    ArrayList<Integer> temp = new ArrayList<>();
+                    int agent = state.getAgent();
+                    int prey = state.getPrey() + 50;
+                    int predator = state.getPredator() + 100;
+                    for (int y = 0; y < 150; y++) {
+                        if (agent == y)
+                            temp.add(1);
+                        else if (prey == y)
+                            temp.add(1);
+                        else if (predator == y)
+                            temp.add(1);
+                        else
+                            temp.add(0);
+                    }
+                    states.add(temp);
+                    values.add(ustar.get(state));
+                }
+            }
+
+
+        }
+        try{
+            FileOutputStream fos = new FileOutputStream("states_train");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(states);
+            oos.close();
+            fos.close();
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        try{
+            FileOutputStream fos = new FileOutputStream("values_train");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(values);
+            oos.close();
+            fos.close();
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+
+        try{
+            FileOutputStream fos = new FileOutputStream("maze");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(globalMaze);
+            oos.close();
+            fos.close();
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+
+    }
+
+
+
+
+
     public static void run(){
-
-
 //        keeps track of iter
         globalMaze = Graph.buildGraph();
         long total = System.nanoTime();
@@ -662,8 +733,6 @@ public class Ustar {
             }
             steps[1] += resultOne.steps;
 
-
-
             Result resultTwo = partial(globalMaze);
             if (resultTwo.predatorCatchesAgent) {
 //                    predator catches agent
@@ -687,9 +756,6 @@ public class Ustar {
             }
             preySurveyRate[2] += resultTwo.surveyRate;
             steps[2] += resultTwo.steps;
-
-
-
 //
             long endTime = System.nanoTime();
             long duration = (endTime - total)/(long)Math.pow(10,9);
@@ -714,6 +780,10 @@ public class Ustar {
             System.out.println("Hung out of Loss: " + (double)hung[x]/((double)predatorSuccess[x] + agentFail[x]+hung[x]));
             System.out.println();
         }
+
+        oneHotEncoder();
+
+
     }
 
     public static void main (String args[]) {

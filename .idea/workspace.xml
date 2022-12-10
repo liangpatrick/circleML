@@ -4,20 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="Started V*">
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/ActivationLayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Activations.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/FCLayer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/HiddenLayers.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Layers.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Matrix.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Network.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/NeuralNetwork.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/mse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vComplete" afterDir="false" />
+    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="v* test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Agents/Matrix.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Agents/Ustar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Agents/Ustar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Agents/Vstar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Agents/Vstar.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,7 +79,7 @@
       <workItem from="1669687702405" duration="276000" />
       <workItem from="1669688014148" duration="160000" />
       <workItem from="1669688185489" duration="187853000" />
-      <workItem from="1670395782225" duration="61639000" />
+      <workItem from="1670395782225" duration="62163000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <created>1669688715959</created>
@@ -163,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670395244629</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="v* test">
+      <created>1670646475501</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1670646475501</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +186,7 @@
     <MESSAGE value="Finished U* along with serialization." />
     <MESSAGE value="Serialized data set.&#10;100% U* complete and 99.96% U* partial." />
     <MESSAGE value="Started V*" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started V*" />
+    <MESSAGE value="v* test" />
+    <option name="LAST_COMMIT_MESSAGE" value="v* test" />
   </component>
 </project>

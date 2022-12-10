@@ -365,7 +365,7 @@ public class Vstar {
 
 
         List<Double> output;
-//        serializeV();
+        serializeV();
         for(int d[]:states)
         {
             output = net.predict(d);

@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="updated formatting">
+    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="updated matrix init">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/FCLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/FCLayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +80,7 @@
       <workItem from="1669688014148" duration="160000" />
       <workItem from="1669688185489" duration="187853000" />
       <workItem from="1670395782225" duration="74545000" />
-      <workItem from="1670698572748" duration="22275000" />
+      <workItem from="1670698572748" duration="23082000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <created>1669688715959</created>
@@ -188,7 +187,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670724328689</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="updated matrix init">
+      <created>1670739338061</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1670739338061</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,7 +226,8 @@
     <MESSAGE value="pomfix?" />
     <MESSAGE value="vstar complete potentially done" />
     <MESSAGE value="updated formatting" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated formatting" />
+    <MESSAGE value="updated matrix init" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated matrix init" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -20,8 +20,8 @@ public class Matrix implements Serializable {
         this.cols = cols;
         for (int x = 0; x < rows; x++)
             for (int y = 0; y < cols; y++) {
-//                m[i][j] = Math.random();
-                m[x][y] = Math.random() * 2 - 1;
+                m[x][y] = Math.random() - 0.5;
+//                m[x][y] = Math.random() * 2 - 1;
             }
 
     }

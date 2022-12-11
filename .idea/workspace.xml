@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="pomfix?">
+    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="updated formatting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Agents/Vstar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Agents/Vstar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/ActivationLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/ActivationLayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Activations.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/FCLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/FCLayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/HiddenLayers.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Layers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Layers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Matrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Network.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/NeuralNetwork.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/mse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/mse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vComplete" beforeDir="false" afterPath="$PROJECT_DIR$/vComplete" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +81,7 @@
       <workItem from="1669688014148" duration="160000" />
       <workItem from="1669688185489" duration="187853000" />
       <workItem from="1670395782225" duration="74545000" />
-      <workItem from="1670698572748" duration="18240000" />
+      <workItem from="1670698572748" duration="22275000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <created>1669688715959</created>
@@ -183,7 +174,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670648534470</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="vstar complete potentially done">
+      <created>1670724238051</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1670724238051</updated>
+    </task>
+    <task id="LOCAL-00015" summary="updated formatting">
+      <created>1670724328689</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1670724328689</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,7 +218,9 @@
     <MESSAGE value="Started V*" />
     <MESSAGE value="v* test" />
     <MESSAGE value="pomfix?" />
-    <option name="LAST_COMMIT_MESSAGE" value="pomfix?" />
+    <MESSAGE value="vstar complete potentially done" />
+    <MESSAGE value="updated formatting" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated formatting" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

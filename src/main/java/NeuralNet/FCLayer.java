@@ -12,9 +12,9 @@ public class FCLayer extends Layers {
     public FCLayer(int inputSize, int outputSize) {
 //        arbitrary starting weights and arbitrary starting bias
         this.weights = new Matrix(inputSize, outputSize);
-        weights.add(-0.5);
+//        weights.add(-0.5);
         this.bias = new Matrix(1, outputSize);
-        bias.add(-0.5);
+//        bias.add(-0.5);
     }
 
     //   performs forward pass without activation function

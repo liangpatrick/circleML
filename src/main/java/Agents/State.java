@@ -8,19 +8,22 @@ public class State {
     public int agent;
     public int prey;
     public int predator;
-    public State(int agent, int prey, int predator){
+
+    public State(int agent, int prey, int predator) {
         this.agent = agent;
         this.prey = prey;
         this.predator = predator;
     }
 
-    public int getAgent(){
+    public int getAgent() {
         return agent;
     }
-    public int getPrey(){
+
+    public int getPrey() {
         return prey;
     }
-    public int getPredator(){
+
+    public int getPredator() {
         return predator;
     }
 
@@ -41,10 +44,10 @@ public class State {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
 //                 if deriving:
 //        appendSuper(super.hashCode()).
-                        append(agent).
-                    append(prey).
+        append(agent).
+                append(prey).
                 append(predator).
-        toHashCode();
+                toHashCode();
     }
 
     @Override
@@ -57,8 +60,9 @@ public class State {
         State rhs = (State) obj;
         return new EqualsBuilder().append(agent, rhs.agent).append(prey, rhs.prey).append(predator, rhs.predator).isEquals();
     }
+
     @Override
-    public String toString(){
-        return ("Agent: " + agent + "; Prey: " + prey +  "; Predator: " + predator);
+    public String toString() {
+        return ("Agent: " + agent + "; Prey: " + prey + "; Predator: " + predator);
     }
 }

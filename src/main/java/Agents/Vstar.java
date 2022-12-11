@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 
 
-
 public class Vstar {
 
     public static ArrayList<ArrayList<Graph.Node>> maze = new ArrayList<>();
@@ -21,8 +20,7 @@ public class Vstar {
     public static double[][] values = new double[125000][1];
 
 
-
-    public static void initStates(){
+    public static void initStates() {
         ArrayList<ArrayList<Integer>> s = new ArrayList<>();
         for (int agentP = 0; agentP < 50; agentP++) {
             for (int preyP = 0; preyP < 50; preyP++) {
@@ -67,7 +65,8 @@ public class Vstar {
         deserializeValues();
         deserializeMaze();
     }
-    public static void deserializeStates(){
+
+    public static void deserializeStates() {
         ArrayList<ArrayList<Integer>> s = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream("states_train");
@@ -101,7 +100,8 @@ public class Vstar {
 //            System.out.println();
 //        }
     }
-    public static void deserializeValues(){
+
+    public static void deserializeValues() {
         ArrayList<Double> v = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream("values_train");
@@ -123,7 +123,7 @@ public class Vstar {
 //        transform into []
         double min = Double.POSITIVE_INFINITY;
         for (int x = 0; x < v.size(); x++) {
-            if(!Double.isInfinite(v.get(x)))
+            if (!Double.isInfinite(v.get(x)))
                 min = Math.min(min, v.get(x));
 
         }
@@ -131,7 +131,7 @@ public class Vstar {
 //        System.out.println(min);
 
         for (int x = 0; x < v.size(); x++) {
-            if(Double.isInfinite(v.get(x)))
+            if (Double.isInfinite(v.get(x)))
                 values[x][0] = min;
             else
                 values[x][0] = v.get(x);
@@ -142,7 +142,8 @@ public class Vstar {
 //            System.out.println(value[0]);
 //        }
     }
-    public static void deserializeMaze(){
+
+    public static void deserializeMaze() {
         try {
             FileInputStream fis = new FileInputStream("maze");
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -165,6 +166,7 @@ public class Vstar {
 //            System.out.println(employee);
 //        }
     }
+
     public static Result complete(ArrayList<ArrayList<Graph.Node>> maze) {
 //        initializes all player positions
         Agent agent = new Agent();
@@ -284,7 +286,8 @@ public class Vstar {
     static List<Graph.Node> getNextPredatorStates(int predator) {
         return maze.get(predator).subList(1, maze.get(predator).size());
     }
-    public static int[] stateToHot(State state){
+
+    public static int[] stateToHot(State state) {
         int[] temp = new int[150];
         int agent = state.getAgent();
         int prey = state.getPrey() + 50;
@@ -303,7 +306,7 @@ public class Vstar {
     }
 
 
-    public static void serializeV(){
+    public static void serializeV() {
         try {
             FileOutputStream fos = new FileOutputStream("vComplete");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -314,7 +317,8 @@ public class Vstar {
             ioe.printStackTrace();
         }
     }
-    public static void deserializeV(){
+
+    public static void deserializeV() {
         try {
             FileInputStream fis = new FileInputStream("vComplete");
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -341,13 +345,13 @@ public class Vstar {
 //        }
     }
 
-    public static void temp(int[] temp){
-        for(int x = 0; x < temp.length; x++){
+    public static void temp(int[] temp) {
+        for (int x = 0; x < temp.length; x++) {
             System.out.print(temp[x] + " ");
         }
     }
 
-    public static void train(){
+    public static void train() {
         long total = System.nanoTime();
         deserialize();
         long endTime = System.nanoTime();
@@ -369,7 +373,6 @@ public class Vstar {
         net.fit(states, values, 100, 0.0005);
 
 
-
 //        List<Double> output;
 //        serializeV();
 //        for(int d[]:states)
@@ -380,6 +383,7 @@ public class Vstar {
         serializeV();
 
     }
+
     public static void run() {
 //        keeps track of iter
         deserializeV();
@@ -459,11 +463,7 @@ public class Vstar {
         }
 
 
-
     }
-
-
-
 
 
     public static void main(String[] args) {
@@ -474,15 +474,9 @@ public class Vstar {
 //        run();
 
 
-
-
-
-
-
         long endTime = System.nanoTime();
         long duration = (endTime - total) / (long) Math.pow(10, 9);
         System.out.println("Total Time: " + duration);
-
 
 
     }

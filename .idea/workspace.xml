@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="updated matrix init">
+    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="pom fix?">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +79,7 @@
       <workItem from="1669688014148" duration="160000" />
       <workItem from="1669688185489" duration="187853000" />
       <workItem from="1670395782225" duration="74545000" />
-      <workItem from="1670698572748" duration="23082000" />
+      <workItem from="1670698572748" duration="24276000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <created>1669688715959</created>
@@ -194,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670739338061</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="pom fix?">
+      <created>1670740365305</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1670740365305</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,7 +233,8 @@
     <MESSAGE value="vstar complete potentially done" />
     <MESSAGE value="updated formatting" />
     <MESSAGE value="updated matrix init" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated matrix init" />
+    <MESSAGE value="pom fix?" />
+    <option name="LAST_COMMIT_MESSAGE" value="pom fix?" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

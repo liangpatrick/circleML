@@ -3,47 +3,43 @@ package NeuralNet;
 
 import java.util.List;
 
-public class FCLayer extends Layers{
+public class FCLayer extends Layers {
 
-    static Matrix weights;
-    static Matrix bias;
+    Matrix weights;
+    Matrix bias;
 
-
-//   input_size = number of input neurons
-//   output_size = number of output neurons
-
-    public FCLayer (int input_size, int output_size) {
-        this.weights = new Matrix(input_size, output_size);
+    //  Constructor to initialize fully connected layer
+    public FCLayer(int inputSize, int outputSize) {
+//        arbitrary starting weights and arbitrary starting bias
+        this.weights = new Matrix(inputSize, outputSize);
         weights.add(-0.5);
-        this.bias = new Matrix(1, output_size);
+        this.bias = new Matrix(1, outputSize);
         bias.add(-0.5);
     }
 
-//   returns output for a given input
-    public Matrix forward_propagation(Matrix input_m) {
+    //   performs forward pass without activation function
+    public Matrix forwardPropagation(Matrix input_m) {
         input = input_m;
         output = Matrix.multiply(input, weights);
         output.rowAdd(bias);
         return output;
     }
 
-//    # computes dE/dW, dE/dB for a given output_error=dE/dY. Returns input_error=dE/dX.
-    public Matrix backward_propagation(Matrix output_error, double learning_rate) {
-        Matrix input_error = Matrix.multiply(output_error, Matrix.transpose(weights));
-        Matrix weights_error = Matrix.multiply(Matrix.transpose(input), output_error);
+    //   performs packwards pass without activation function
+    public Matrix backwardPropagation(Matrix error, double learningRate) {
 
-//            dBias = output_error
-
+//        calculates dE/dW and dE/dB for a given error
+        Matrix inputError = Matrix.multiply(error, Matrix.transpose(weights));
+        Matrix weightsError = Matrix.multiply(Matrix.transpose(input), error);
 //        update parameters
-        weights_error.multiply(learning_rate);
-        output_error.multiply(learning_rate);
-        weights.rowSubtract(weights_error);
-        bias.rowSubtract(output_error);
-        return input_error;
+        weightsError.multiply(learningRate);
+        error.multiply(learningRate);
+//      updates weights/bias
+        weights.subtract(weightsError);
+        bias.subtract(error);
+
+        return inputError;
     }
-
-
-
 
 
 }

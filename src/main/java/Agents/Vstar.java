@@ -15,9 +15,6 @@ import java.util.Random;
 public class Vstar {
 
     public static ArrayList<ArrayList<Graph.Node>> maze = new ArrayList<>();
-
-    public static NeuralNetwork nn;
-
     public static Network net;
 
     public static int[][] states = new int[125000][150];
@@ -63,8 +60,8 @@ public class Vstar {
 
 
     public static void deserialize() {
-//        deserializeStates();
-        initStates();
+        deserializeStates();
+//        initStates();
 
 
         deserializeValues();
@@ -192,7 +189,7 @@ public class Vstar {
 
 //                if (ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell())) == null || Double.isInfinite(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))) || Double.isNaN(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))))
 //                    continue;
-                double currUtil = nn.predict(stateToHot(new State(n.getCell(), prey.getCell(), predator.getCell()))).get(0);
+                double currUtil = net.predict(stateToHot(new State(n.getCell(), prey.getCell(), predator.getCell()))).get(0);
                 if (value < currUtil) {
                     cell = n.getCell();
                     value = currUtil;
@@ -310,7 +307,7 @@ public class Vstar {
         try {
             FileOutputStream fos = new FileOutputStream("vComplete");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(nn);
+            oos.writeObject(net);
             oos.close();
             fos.close();
         } catch (IOException ioe) {
@@ -322,7 +319,7 @@ public class Vstar {
             FileInputStream fis = new FileInputStream("vComplete");
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            nn = (NeuralNetwork) ois.readObject();
+            net = (Network) ois.readObject();
 
             ois.close();
             fis.close();
@@ -344,6 +341,12 @@ public class Vstar {
 //        }
     }
 
+    public static void temp(int[] temp){
+        for(int x = 0; x < temp.length; x++){
+            System.out.print(temp[x] + " ");
+        }
+    }
+
     public static void train(){
         long total = System.nanoTime();
         deserialize();
@@ -360,24 +363,22 @@ public class Vstar {
         net.add(new ActivationLayer());
         net.add(new FCLayer(150, 1));
 
-        net.fit(states, values, 100, 0.0001);
+//        temp(states[0]);
+
+
+        net.fit(states, values, 100, 0.0005);
 
 
 
-        List<Double> output;
-        serializeV();
-        for(int d[]:states)
-        {
-            output = net.predict(d);
-            System.out.print(output + " ");
-        }
-//        nn.fit(states, values, 100);
+//        List<Double> output;
 //        serializeV();
 //        for(int d[]:states)
 //        {
-//            output = nn.predict(d);
+//            output = net.predict(d);
 //            System.out.print(output + " ");
 //        }
+        serializeV();
+
     }
     public static void run() {
 //        keeps track of iter

@@ -1,24 +1,26 @@
 package NeuralNet;
-import org.apache.commons.lang3.NotImplementedException;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
+
+// Parent class
 public class Layers extends Matrix {
-    public static Matrix input;
-    public static Matrix output;
-    public Layers(){
+    public Matrix input;
+    public Matrix output;
+
+    //    initial constructor
+    public Layers() {
         this.input = null;
         this.output = null;
     }
 
 
-//    computes the output Y of a layer for a given input X
-    public Matrix forward_propagation(Matrix input_m) {
+    //    parent method that throws an exception if its not implemented
+    public Matrix forwardPropagation(Matrix input_m) {
         throw new NotImplementedException("NotImplemented");
     }
 
-//    computes dE/dX for a given dE/dY (and update parameters if any)
-    public Matrix backward_propagation(Matrix output_error, double learning_rate) {
+    //    parent method that throws an exception if its not implemented
+    public Matrix backwardPropagation(Matrix output_error, double learningRate) {
         throw new NotImplementedException("NotImplemented");
     }
 }

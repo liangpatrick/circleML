@@ -1,43 +1,62 @@
 package NeuralNet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Network {
+public class Network implements Serializable {
+    //    stores all a layers
     List<Layers> layers;
-    public Network(){
+
+    //    initial constructor
+    public Network() {
         layers = new ArrayList<>();
     }
-    public void add(Layers layer){
+
+    //    adds layers to network
+    public void add(Layers layer) {
         layers.add(layer);
     }
-    public List<Double> predict(int[] X){
-        Matrix output = Matrix.fromArray(X);
-        for(Layers l: layers){
-            output = l.forward_propagation(output);
+
+    //    forward propagation to get utility values after training
+    public List<Double> predict(int[] X) {
+        Matrix output = Matrix.arrayToMatrix(X);
+        for (Layers l : layers) {
+            output = l.forwardPropagation(output);
         }
         return output.toArray();
 
     }
-    public void fit(int[][] X, double[][] Y, int epochs, double learning_rate) {
 
-        for(int x = 0; x < epochs; x++){
+    //    fit/train
+    public void fit(int[][] X, double[][] Y, int epochs, double learningRate) {
+        for (int x = 0; x < epochs; x++) {
             long total = System.nanoTime();
+            double err = 0.0;
+            for (int y = 0; y < X.length; y++) {
+//                initializes output
+                Matrix output = Matrix.arrayToMatrix(X[y]);
+//                forward propagation through all the layers
+                for (Layers layer : layers) {
+                    output = layer.forwardPropagation(output);
+                }
+//                calculates error for display
+                err += mse.mse(Y[y], output.toArray());
 
-            for(int y = 0; y < X.length; y++) {
-                Matrix output = Matrix.fromArray(X[y]);
-                for (Layers layer : layers) {
-                    output = layer.forward_propagation(output);
+//                calculates error for back propagation
+                Matrix error = mse.mse_prime(Matrix.arrayToMatrix(Y[y]), output);
+//                  back propagation through all layers
+                for (int i = layers.size() - 1; i >= 0; i--) {
+                    Layers layer = layers.get(i);
+                    error = layer.backwardPropagation(error, learningRate);
                 }
-                Matrix error = mse.mse_prime(Matrix.fromArray(Y[y]), output);
-                for (Layers layer : layers) {
-                    error = layer.backward_propagation(error, learning_rate);
-                }
+
             }
+            err /= X.length;
 
             long endTime = System.nanoTime();
             long duration = (endTime - total) / (long) Math.pow(10, 9);
-            System.out.println("Epoch: " + x + "; Time: " + duration);
+            System.out.println("Epoch: " + x + "; error: " + err + "; Time: " + duration);
         }
     }
 }

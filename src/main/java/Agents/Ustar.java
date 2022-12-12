@@ -380,9 +380,7 @@ public class Ustar {
             }
 
 
-//            if (belief[state.getPrey()] > 0) {
-                currValue += belief[state.getPrey()] * ustar.get(state);
-//            }
+            currValue += belief[state.getPrey()] * ustar.get(state);
 
             prevAction = state.getAgent();
         }

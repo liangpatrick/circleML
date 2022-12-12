@@ -1,0 +1,34 @@
+<changelist name="Uncommitted_changes_before_Update_at_12_12_2022_2_01_AM_[Changes]" date="1670828524696" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_12_2022_2_01_AM_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 12/12/2022 2:01 AM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="commons-lang3-3.12.0/commons-lang3-3.12.0-tests.jar" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="maze" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_12_2022_2_01_AM_[Changes]/maze" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="commons-lang3-3.12.0/commons-lang3-3.12.0-test-sources.jar" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="commons-lang3-3.12.0/commons-lang3-3.12.0-sources.jar" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="values_train" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_12_2022_2_01_AM_[Changes]/values_train" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="states_train" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_12_2022_2_01_AM_[Changes]/states_train" />
+  </binary>
+</changelist>

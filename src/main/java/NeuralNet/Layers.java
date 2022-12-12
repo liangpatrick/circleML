@@ -2,8 +2,11 @@ package NeuralNet;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import java.io.Serializable;
+
 // Parent class
-public class Layers extends Matrix {
+public class Layers extends Matrix implements Serializable {
+
     public Matrix input;
     public Matrix output;
 

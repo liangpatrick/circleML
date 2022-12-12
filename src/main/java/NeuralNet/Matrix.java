@@ -21,7 +21,6 @@ public class Matrix implements Serializable {
         for (int x = 0; x < rows; x++)
             for (int y = 0; y < cols; y++) {
                 m[x][y] = Math.random() - 0.5;
-//                m[x][y] = Math.random() * 2 - 1;
             }
 
     }
@@ -54,29 +53,16 @@ public class Matrix implements Serializable {
 
     }
 
-//    public void rowSubtract(Matrix m) {
-//        for (int i = 0; i < rows; i++) {
-//            for (int j = 0; j < cols; j++) {
-//                this.m[i][j] -= m.m[0][j];
-//            }
-//        }
-//    }
-//
-//    public void columnSubtract(Matrix m) {
-//        for (int i = 0; i < rows; i++) {
-//            for (int j = 0; j < cols; j++) {
-//                this.m[i][j] -= m.m[j][0];
-//            }
-//        }
-//    }
 
     //  used when number of rows doesn't match but columns does
     public void rowMultiply(Matrix m) {
         for (int x = 0; x < rows; x++)
-            for (int y = 0; y < m.cols; y++) {
+            for (int y = 0; y < cols; y++) {
                 this.m[x][y] *= m.m[0][y];
             }
     }
+
+
 
     //  add a double
     public void add(double d) {
@@ -87,18 +73,7 @@ public class Matrix implements Serializable {
     }
 
 
-//    public void add(Matrix m) {
-//        if (cols != m.cols || rows != m.rows) {
-//            System.out.println("Shape Mismatch");
-//            return;
-//        }
-//
-//        for (int i = 0; i < rows; i++) {
-//            for (int j = 0; j < cols; j++) {
-//                this.m[i][j] += m.m[i][j];
-//            }
-//        }
-//    }
+
 
     //    transforms array to matrix
     public static Matrix arrayToMatrix(double[] arr) {
@@ -165,45 +140,43 @@ public class Matrix implements Serializable {
         return temp;
     }
 
-//    public void multiply(Matrix a) {
-//        for (int i = 0; i < a.rows; i++) {
-//            for (int j = 0; j < a.cols; j++) {
-//                this.m[i][j] *= a.m[i][j];
-//            }
-//        }
-//
-//    }
 
     //    multiply by double
-    public void multiply(double d) {
-        for (int x = 0; x < rows; x++)
-            for (int y = 0; y < cols; y++) {
-                this.m[x][y] *= d;
+    public static Matrix multiply(Matrix m, double d) {
+        Matrix temp = new Matrix(m.rows, m.cols);
+        for (int x = 0; x < temp.rows; x++)
+            for (int y = 0; y < temp.cols; y++) {
+                temp.m[x][y] = m.m[x][y] * d;
             }
 
-
+        return temp;
     }
 
     //    activation function
-    public void tanh() {
+    public Matrix tanh() {
+        Matrix temp = new Matrix(rows, cols);
+
         for (int x = 0; x < rows; x++)
             for (int y = 0; y < cols; y++) {
-                this.m[x][y] = Math.tanh(this.m[x][y]);
+                temp.m[x][y] = Math.tanh(this.m[x][y]);
             }
 
-
+        return temp;
     }
 
     //    derivative of activation function
-    public void dtanh() {
+    public Matrix dtanh() {
+
+        Matrix temp = new Matrix(rows, cols);
 
         for (int x = 0; x < rows; x++)
             for (int y = 0; y < cols; y++) {
                 double tanh = Math.tanh(this.m[x][y]);
-                this.m[x][y] = 1 - (Math.pow(tanh, 2));
+
+                temp.m[x][y] = 1 - (Math.pow(tanh, 2));
             }
 
-
+        return temp;
     }
 
 

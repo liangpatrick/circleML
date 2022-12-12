@@ -15,7 +15,7 @@ public class Vstar {
 
     public static ArrayList<ArrayList<Graph.Node>> maze = new ArrayList<>();
     public static Network net;
-
+    static double max;
     public static int[][] states = new int[125000][150];
     public static double[][] values = new double[125000][1];
 
@@ -58,8 +58,8 @@ public class Vstar {
 
 
     public static void deserialize() {
-        deserializeStates();
-//        initStates();
+//        deserializeStates();
+        initStates();
 
 
         deserializeValues();
@@ -121,10 +121,10 @@ public class Vstar {
         }
 
 //        transform into []
-        double min = Double.POSITIVE_INFINITY;
+        max = -1.0;
         for (int x = 0; x < v.size(); x++) {
             if (!Double.isInfinite(v.get(x)))
-                min = Math.min(min, v.get(x));
+                max = Math.max(max, v.get(x));
 
         }
 
@@ -132,7 +132,7 @@ public class Vstar {
 
         for (int x = 0; x < v.size(); x++) {
             if (Double.isInfinite(v.get(x)))
-                values[x][0] = min;
+                values[x][0] = max * 2;
             else
                 values[x][0] = v.get(x);
         }
@@ -185,14 +185,28 @@ public class Vstar {
             List<Graph.Node> neighbors = getNextAgentStates(agent.getCell());
 
             int cell = -1;
-            double value = Double.NEGATIVE_INFINITY;
+            double value = Double.POSITIVE_INFINITY;
             for (Graph.Node n : neighbors) {
 
 
 //                if (ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell())) == null || Double.isInfinite(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))) || Double.isNaN(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))))
 //                    continue;
-                double currUtil = net.predict(stateToHot(new State(n.getCell(), prey.getCell(), predator.getCell()))).get(0);
-                if (value < currUtil) {
+                double currUtil;
+                if (n.getCell() == predator.getCell() && n.getCell() != prey.getCell()) {
+                    currUtil = Double.POSITIVE_INFINITY;
+                }
+                else if (Predator.bfs(n.getCell(), predator.getCell(), maze).size() == 2) {
+                    currUtil = Double.POSITIVE_INFINITY;
+                }
+//                else if (Predator.bfs(n.getCell(), prey.getCell(), maze).size() == 2) {
+//                    currUtil = 1.0;
+//                } else if (prey.getCell() == n.getCell()) {
+//                    currUtil = 0.0;
+//                }
+                else {
+                    currUtil = net.predict(stateToHot(new State(n.getCell(), prey.getCell(), predator.getCell()))).get(0);
+                }
+                if (value > currUtil) {
                     cell = n.getCell();
                     value = currUtil;
                 }
@@ -308,7 +322,7 @@ public class Vstar {
 
     public static void serializeV() {
         try {
-            FileOutputStream fos = new FileOutputStream("vComplete");
+            FileOutputStream fos = new FileOutputStream("test");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(net);
             oos.close();
@@ -320,7 +334,7 @@ public class Vstar {
 
     public static void deserializeV() {
         try {
-            FileInputStream fis = new FileInputStream("vComplete");
+            FileInputStream fis = new FileInputStream("test");
             ObjectInputStream ois = new ObjectInputStream(fis);
 
             net = (Network) ois.readObject();
@@ -366,27 +380,28 @@ public class Vstar {
         net.add(new FCLayer(150, 150));
         net.add(new ActivationLayer());
         net.add(new FCLayer(150, 1));
-
+//        serializeV();
+//
 //        temp(states[0]);
 
 
-        net.fit(states, values, 100, 0.0005);
-
+        net.fit(states, values, 100, 0.0001);
 
 //        List<Double> output;
-//        serializeV();
+        serializeV();
+//        deserializeV();
 //        for(int d[]:states)
 //        {
 //            output = net.predict(d);
 //            System.out.print(output + " ");
 //        }
-        serializeV();
+//        serializeV();
 
     }
 
     public static void run() {
 //        keeps track of iter
-        deserializeV();
+//        deserializeV();
         deserializeMaze();
         long total = System.nanoTime();
         int[] agentSuccess = new int[3];
@@ -471,7 +486,7 @@ public class Vstar {
 
 
         train();
-//        run();
+        run();
 
 
         long endTime = System.nanoTime();

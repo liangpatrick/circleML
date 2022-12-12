@@ -32,12 +32,12 @@ public class Ustar {
             List<Graph.Node> neighbors = getNextAgentStates(agent.getCell());
 
             int cell = -1;
-            double value = Double.NEGATIVE_INFINITY;
+            double value = Double.POSITIVE_INFINITY;
             for (Graph.Node n : neighbors) {
                 if (ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell())) == null || Double.isInfinite(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))) || Double.isNaN(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))))
                     continue;
                 double currUtil = ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()));
-                if (value < currUtil) {
+                if (value > currUtil) {
                     cell = n.getCell();
                     value = currUtil;
                 }
@@ -120,7 +120,7 @@ public class Ustar {
         ArrayList<State> states = getNextStates(agent, prey, predator);
 //        init value
         double currValue = 0.0;
-        double maxValue = Double.NEGATIVE_INFINITY;
+        double minValue = Double.POSITIVE_INFINITY;
 //        used to keep track of what action it is on
         int prevAction = -1;
 
@@ -148,9 +148,9 @@ public class Ustar {
             if (prevAction == -1) {
                 prevAction = state.getAgent();
             }
-//            if its a new action, update maxValue
+//            if its a new action, update minValue
             if (prevAction != state.getAgent()) {
-                maxValue = Math.max(maxValue, currValue);
+                minValue = Math.min(minValue, currValue);
                 currValue = 0.0;
             }
 
@@ -177,8 +177,8 @@ public class Ustar {
         }
 
 //      one last max
-        maxValue = Math.max(maxValue, currValue);
-        return -1.0 + maxValue;
+        minValue = Math.min(minValue, currValue);
+        return 1.0 + minValue;
     }
 
     //    goes through all states and updates values
@@ -189,13 +189,13 @@ public class Ustar {
                 for (int predator = 0; predator < 50; predator++) {
 //                    base cases
                     if (agent == predator && prey != agent)
-                        temp.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
+                        temp.put(new State(agent, prey, predator), Double.POSITIVE_INFINITY);
                     else if (agent == prey)
                         temp.put(new State(agent, prey, predator), 0.0);
                     else if (Predator.bfs(agent, predator, globalMaze).size() == 2)
-                        temp.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
+                        temp.put(new State(agent, prey, predator), Double.POSITIVE_INFINITY);
                     else if (Predator.bfs(agent, prey, globalMaze).size() == 2)
-                        temp.put(new State(agent, prey, predator), -1.0);
+                        temp.put(new State(agent, prey, predator), 1.0);
                     else
                         temp.put(new State(agent, prey, predator), updateValues(agent, prey, predator));
 //                    System.out.println(temp.get(new State(agent, prey, predator)));
@@ -268,12 +268,12 @@ public class Ustar {
             List<Graph.Node> neighbors = getNextAgentStates(agent.getCell());
 
             int cell = -1;
-            double value = Double.NEGATIVE_INFINITY;
+            double value = Double.POSITIVE_INFINITY;
             for (Graph.Node n : neighbors) {
                 if (ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell())) == null || Double.isInfinite(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))) || Double.isNaN(ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()))))
                     continue;
                 double currUtil = ustar.get(new State(n.getCell(), prey.getCell(), predator.getCell()));
-                if (value < currUtil) {
+                if (value > currUtil) {
                     cell = n.getCell();
                     value = currUtil;
                 }
@@ -362,7 +362,7 @@ public class Ustar {
         ArrayList<State> states = getNextPartialStates(agent, predator);
 //        init value
         double currValue = 0.0;
-        double maxValue = Double.NEGATIVE_INFINITY;
+        double minValue = Double.POSITIVE_INFINITY;
 //        used to keep track of what action it is on
         int prevAction = -1;
 
@@ -372,24 +372,24 @@ public class Ustar {
             if (prevAction == -1) {
                 prevAction = state.getAgent();
             }
-//            if its a new action, update maxValue
+//            if its a new action, update minValue
             if (prevAction != state.getAgent()) {
 //                System.out.println(currValue);
-                maxValue = Math.max(maxValue, currValue);
+                minValue = Math.min(minValue, currValue);
                 currValue = 0.0;
             }
 
 
-            if (belief[state.getPrey()] > 0) {
+//            if (belief[state.getPrey()] > 0) {
                 currValue += belief[state.getPrey()] * ustar.get(state);
-            }
+//            }
 
             prevAction = state.getAgent();
         }
 
 //      one last max
-        maxValue = Math.max(maxValue, currValue);
-        return -1.0 + maxValue;
+        minValue = Math.min(minValue, currValue);
+        return 1.0 + minValue;
     }
 
 
@@ -405,13 +405,13 @@ public class Ustar {
                 for (int prey = 0; prey < 50; prey++) {
 //                    base cases
                     if (agents.get(agent).getCell() == predatorCell && prey != agents.get(agent).getCell())
-                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), Double.NEGATIVE_INFINITY);
+                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), Double.POSITIVE_INFINITY);
                     else if (agents.get(agent).getCell() == prey)
                         temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), 0.0);
                     else if (Predator.bfs(agents.get(agent).getCell(), predatorCell, globalMaze).size() == 2)
-                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), Double.NEGATIVE_INFINITY);
+                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), Double.POSITIVE_INFINITY);
                     else if (Predator.bfs(agents.get(agent).getCell(), prey, globalMaze).size() == 2)
-                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), -1.0);
+                        temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), 1.0);
                     else
                         temp.put(new State(agents.get(agent).getCell(), prey, predatorCell), updateValuesPartial(agentCell, predatorCell));
 
@@ -429,13 +429,13 @@ public class Ustar {
                 for (int predator = 0; predator < 50; predator++) {
 //                    base cases
                     if (agent == predator && prey != agent)
-                        arr.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
+                        arr.put(new State(agent, prey, predator), Double.POSITIVE_INFINITY);
                     else if (agent == prey)
                         arr.put(new State(agent, prey, predator), 0.0);
                     else if (Predator.bfs(agent, predator, globalMaze).size() == 2)
-                        arr.put(new State(agent, prey, predator), Double.NEGATIVE_INFINITY);
+                        arr.put(new State(agent, prey, predator), Double.POSITIVE_INFINITY);
                     else if (Predator.bfs(agent, prey, globalMaze).size() == 2)
-                        arr.put(new State(agent, prey, predator), -1.0);
+                        arr.put(new State(agent, prey, predator), 1.0);
                     else
                         arr.put(new State(agent, prey, predator), 0.0);
                 }

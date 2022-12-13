@@ -15,7 +15,6 @@ public class Vstar {
 
     public static ArrayList<ArrayList<Graph.Node>> maze = new ArrayList<>();
     public static Network net;
-    static double max;
     public static int[][] states = new int[125000][150];
     public static double[][] values = new double[125000][1];
 
@@ -121,26 +120,22 @@ public class Vstar {
         }
 
 //        transform into []
-        max = -1.0;
+        double max = -1.0;
         for (int x = 0; x < v.size(); x++) {
             if (!Double.isInfinite(v.get(x)))
                 max = Math.max(max, v.get(x));
 
         }
 
-//        System.out.println(min);
 
         for (int x = 0; x < v.size(); x++) {
             if (Double.isInfinite(v.get(x)))
-                values[x][0] = max * 2;
+                values[x][0] = max + 10.0;
             else
                 values[x][0] = v.get(x);
         }
 
-        ////        //Verify list m
-//        for (double[] value : values) {
-//            System.out.println(value[0]);
-//        }
+
     }
 
     public static void deserializeMaze() {
@@ -194,8 +189,7 @@ public class Vstar {
                 double currUtil;
                 if (n.getCell() == predator.getCell() && n.getCell() != prey.getCell()) {
                     currUtil = Double.POSITIVE_INFINITY;
-                }
-                else if (Predator.bfs(n.getCell(), predator.getCell(), maze).size() == 2) {
+                } else if (Predator.bfs(n.getCell(), predator.getCell(), maze).size() == 2) {
                     currUtil = Double.POSITIVE_INFINITY;
                 }
 //                else if (Predator.bfs(n.getCell(), prey.getCell(), maze).size() == 2) {
@@ -284,17 +278,9 @@ public class Vstar {
 
     }
 
-    //    return array slist of all possible states for current position
-
-
     //    return array list of possible agent actions
     static List<Graph.Node> getNextAgentStates(int agent) {
         return maze.get(agent).subList(1, maze.get(agent).size());
-    }
-
-    //    return array list of prey neighbors
-    static ArrayList<Graph.Node> getNextPreyStates(int prey) {
-        return maze.get(prey);
     }
 
     static List<Graph.Node> getNextPredatorStates(int predator) {
@@ -319,10 +305,9 @@ public class Vstar {
         return temp;
     }
 
-
     public static void serializeV() {
         try {
-            FileOutputStream fos = new FileOutputStream("test");
+            FileOutputStream fos = new FileOutputStream("v_complete");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(net);
             oos.close();
@@ -334,7 +319,7 @@ public class Vstar {
 
     public static void deserializeV() {
         try {
-            FileInputStream fis = new FileInputStream("test");
+            FileInputStream fis = new FileInputStream("v_complete");
             ObjectInputStream ois = new ObjectInputStream(fis);
 
             net = (Network) ois.readObject();
@@ -359,12 +344,6 @@ public class Vstar {
 //        }
     }
 
-    public static void temp(int[] temp) {
-        for (int x = 0; x < temp.length; x++) {
-            System.out.print(temp[x] + " ");
-        }
-    }
-
     public static void train() {
         long total = System.nanoTime();
         deserialize();
@@ -372,7 +351,6 @@ public class Vstar {
         long duration = (endTime - total) / (long) Math.pow(10, 9);
         System.out.println("Serialization: " + duration);
         System.out.println("Done Serialization. Initiate Training.");
-//        nn = new NeuralNetwork(2, 1,150,1,1);
 
         net = new Network();
         net.add(new FCLayer(150, 150));
@@ -380,28 +358,19 @@ public class Vstar {
         net.add(new FCLayer(150, 150));
         net.add(new ActivationLayer());
         net.add(new FCLayer(150, 1));
-//        serializeV();
-//
-//        temp(states[0]);
-
 
         net.fit(states, values, 100, 0.0001);
 
-//        List<Double> output;
         serializeV();
-//        deserializeV();
-//        for(int d[]:states)
-//        {
-//            output = net.predict(d);
-//            System.out.print(output + " ");
-//        }
-//        serializeV();
+
 
     }
 
     public static void run() {
 //        keeps track of iter
+
 //        deserializeV();
+
         deserializeMaze();
         long total = System.nanoTime();
         int[] agentSuccess = new int[3];
@@ -457,9 +426,6 @@ public class Vstar {
 //            long duration = (endTime - total) / (long) Math.pow(10, 9);
 //            System.out.println("Iter: " + x + "; Time: " + duration);
 
-
-//            System.out.println();
-
         }
         long endTime = System.nanoTime();
         long duration = (endTime - total) / (long) Math.pow(10, 9);
@@ -483,12 +449,8 @@ public class Vstar {
 
     public static void main(String[] args) {
         long total = System.nanoTime();
-
-
         train();
         run();
-
-
         long endTime = System.nanoTime();
         long duration = (endTime - total) / (long) Math.pow(10, 9);
         System.out.println("Total Time: " + duration);
@@ -496,9 +458,5 @@ public class Vstar {
 
     }
 
-
-//    public static void main(String[] args) throws Exception {
-//        unserialize();
-//    }
 
 }

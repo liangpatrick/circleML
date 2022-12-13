@@ -30,11 +30,8 @@ public class FCLayer extends Layers implements Serializable {
 //        calculates dE/dW and dE/dB for a given error
         Matrix inputError = Matrix.multiply(error, Matrix.transpose(this.weights));
         Matrix weightsError = Matrix.multiply(Matrix.transpose(this.input), error);
-//        update parameters
-        if(!(weightsError.rows == this.weights.rows && weightsError.cols == this.weights.cols))
-            System.out.println("oh no");
-//      updates weights/bias
 
+        //      updates weights/bias
         this.weights.subtract(Matrix.multiply(weightsError, learningRate));
         this.bias.subtract(Matrix.multiply(error, learningRate));
 

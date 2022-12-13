@@ -32,7 +32,7 @@ public class Network implements Serializable {
     public void fit(int[][] X, double[][] Y, int epochs, double learningRate) {
         for (int x = 0; x < epochs; x++) {
             long total = System.nanoTime();
-            double err = 0.0;
+            double error = 0.0;
             for (int y = 0; y < X.length; y++) {
 //                initializes output
                 Matrix output = Matrix.arrayToMatrix(X[y]);
@@ -41,22 +41,22 @@ public class Network implements Serializable {
                     output = layer.forwardPropagation(output);
                 }
 //                calculates error for display
-                err += mse.mse(Y[y], output.toArray());
+                error += mse.mse(Y[y], output.toArray());
 
 //                calculates error for back propagation
-                Matrix error = mse.mse_prime(Matrix.arrayToMatrix(Y[y]), output);
+                Matrix errorPrime = mse.mse_prime(Matrix.arrayToMatrix(Y[y]), output);
 //                  back propagation through all layers
                 for (int i = layers.size() - 1; i >= 0; i--) {
                     Layers layer = layers.get(i);
-                    error = layer.backwardPropagation(error, learningRate);
+                    errorPrime = layer.backwardPropagation(errorPrime, learningRate);
                 }
 
             }
-            err /= X.length;
+            error /= X.length;
 
             long endTime = System.nanoTime();
             long duration = (endTime - total) / (long) Math.pow(10, 9);
-            System.out.println("Epoch: " + x + "; error: " + err + "; Time: " + duration);
+            System.out.println("Epoch: " + x + "; error: " + error + "; Time: " + duration);
         }
     }
 }

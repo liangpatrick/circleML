@@ -681,7 +681,6 @@ public class Ustar {
 
     }
 
-
     public static void run() {
 //        keeps track of iter
         globalMaze = Graph.buildGraph();
@@ -699,7 +698,6 @@ public class Ustar {
             if (resultOne.predatorCatchesAgent) {
 //                    predator catches agent
                 predatorSuccess[1]++;
-//                System.out.println("DEATH");
 
             } else if (resultOne.agentCatchesPrey) {
 //                    agent catches prey
@@ -735,7 +733,6 @@ public class Ustar {
             }
             preySurveyRate[2] += resultTwo.surveyRate;
             steps[2] += resultTwo.steps;
-//
             long endTime = System.nanoTime();
             long duration = (endTime - total) / (long) Math.pow(10, 9);
             System.out.println("Iter: " + x + "; Time: " + duration);

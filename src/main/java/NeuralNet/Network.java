@@ -41,10 +41,11 @@ public class Network implements Serializable {
                     output = layer.forwardPropagation(output);
                 }
 //                calculates error for display
-                error += mse.mse(Y[y], output.toArray());
+                error += Loss.mse(Y[y], output.toArray());
 
 //                calculates error for back propagation
-                Matrix errorPrime = mse.mse_prime(Matrix.arrayToMatrix(Y[y]), output);
+                Matrix errorPrime = Loss.msePrime(Matrix.arrayToMatrix(Y[y]), output);
+//                errorPrime.print();
 //                  back propagation through all layers
                 for (int i = layers.size() - 1; i >= 0; i--) {
                     Layers layer = layers.get(i);

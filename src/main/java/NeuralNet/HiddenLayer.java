@@ -11,9 +11,7 @@ public class HiddenLayer extends Layers implements Serializable {
     public HiddenLayer(int inputSize, int outputSize, boolean activation) {
 //        arbitrary starting weights and arbitrary starting bias
         this.weights = new Matrix(inputSize, outputSize);
-//        weights.add(-0.5);
         this.bias = new Matrix(1, outputSize);
-//        bias.add(-0.5);
         this.activation = activation;
     }
 
@@ -22,32 +20,28 @@ public class HiddenLayer extends Layers implements Serializable {
         this.input = input_m;
         this.output = Matrix.multiply(this.input, this.weights);
         this.output.rowAdd(this.bias);
-
-        this.input = this.output;
-        this.output = this.input.tanh();
+        if(this.activation)
+            this.output = this.output.tanh();
         return this.output;
     }
 
-    //   performs packwards pass without activation function
-    public Matrix backwardPropagation(Matrix error, double learningRate) {
+    public Matrix backwardPropagation(Matrix inputError, double learningRate) {
 
 //        calculates dE/dW and dE/dB for a given error
-        Matrix inputError = Matrix.multiply(error, Matrix.transpose(this.weights));
-        Matrix weightsError = Matrix.multiply(Matrix.transpose(this.input), error);
-//        update parameters
-//        weightsError.multiply(learningRate);
-//        error.multiply(learningRate);
-//      updates weights/bias
+        Matrix error = Matrix.multiply(inputError, Matrix.transpose(this.weights));
+        Matrix weightsError = Matrix.multiply(Matrix.transpose(this.input), inputError);
 
+        //      updates weights/bias
         this.weights.subtract(Matrix.multiply(weightsError, learningRate));
-        this.bias.subtract(Matrix.multiply(error, learningRate));
+        this.bias.subtract(Matrix.multiply(inputError, learningRate));
 
-
-        Matrix temp = this.input.dtanh();
-        temp.rowMultiply(inputError);
-        return temp;
-
-
-//        return inputError;
+        if(this.activation) {
+            Matrix temp = this.input.dtanh();
+            temp.rowMultiply(error);
+            return temp;
+        } else {
+            return error;
+        }
     }
+
 }

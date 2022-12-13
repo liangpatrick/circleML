@@ -6,14 +6,12 @@ public class Result {
     public boolean agentCatchesPrey;
     public boolean agentRunsPredator;
     public boolean preyRunsAgent;
-    public double preySurveyRate;
-    public double predatorSurveyRate;
     public int hung;
     public int steps;
     //  used for both predator and prey when its not combined partial
     public double surveyRate;
 
-    //    partial
+    //    partial prey
     public Result(boolean predatorCatchesAgent, boolean agentCatchesPrey, boolean agentRunsPredator, boolean preyRunsAgent, double surveyRate, int hung, int steps) {
         this.predatorCatchesAgent = predatorCatchesAgent;
         this.agentCatchesPrey = agentCatchesPrey;

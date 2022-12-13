@@ -175,6 +175,9 @@ public class Vstar {
 //            hung
             if (count == 5000)
                 return new Result(false, false, false, false, count, count);
+//            System.out.println("Agent:\t\t" + agent.getCell());
+//            System.out.println("Prey:\t\t" + prey.getCell());
+//            System.out.println("Predator:\t" + predator.getCell());
 
 
             List<Graph.Node> neighbors = getNextAgentStates(agent.getCell());
@@ -189,14 +192,11 @@ public class Vstar {
                 double currUtil;
                 if (n.getCell() == predator.getCell() && n.getCell() != prey.getCell()) {
                     currUtil = Double.POSITIVE_INFINITY;
-                } else if (Predator.bfs(n.getCell(), predator.getCell(), maze).size() == 2) {
+                }
+                else if (Predator.bfs(n.getCell(), predator.getCell(), maze).size() == 2) {
                     currUtil = Double.POSITIVE_INFINITY;
                 }
-//                else if (Predator.bfs(n.getCell(), prey.getCell(), maze).size() == 2) {
-//                    currUtil = 1.0;
-//                } else if (prey.getCell() == n.getCell()) {
-//                    currUtil = 0.0;
-//                }
+
                 else {
                     currUtil = net.predict(stateToHot(new State(n.getCell(), prey.getCell(), predator.getCell()))).get(0);
                 }
@@ -228,6 +228,8 @@ public class Vstar {
             } else {
                 agent.setCell(cell);
             }
+
+
 
 //            win
             if (agent.getCell() == prey.getCell()) {
@@ -300,13 +302,14 @@ public class Vstar {
             else if (predator == y)
                 temp[y] = 1;
             else
-                temp[y] = 1;
+                temp[y] = 0;
         }
         return temp;
     }
 
     public static void serializeV() {
         try {
+//            INPUT YOUR OWN FILE NAME
             FileOutputStream fos = new FileOutputStream("v_complete");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(net);
@@ -335,13 +338,6 @@ public class Vstar {
             return;
         }
 
-//        List<Double> output;
-//
-//        for(int d[]:states)
-//        {
-//            output = nn.predict(d);
-//            System.out.print(output + " ");
-//        }
     }
 
     public static void train() {
@@ -353,11 +349,10 @@ public class Vstar {
         System.out.println("Done Serialization. Initiate Training.");
 
         net = new Network();
-        net.add(new FCLayer(150, 150));
-        net.add(new ActivationLayer());
-        net.add(new FCLayer(150, 150));
-        net.add(new ActivationLayer());
-        net.add(new FCLayer(150, 1));
+        net.add(new HiddenLayer(150, 150, true));
+        net.add(new HiddenLayer(150, 150, true));
+        net.add(new HiddenLayer(150, 1, false));
+
 
         net.fit(states, values, 100, 0.0001);
 
@@ -368,11 +363,12 @@ public class Vstar {
 
     public static void run() {
 //        keeps track of iter
-
-//        deserializeV();
+        long total = System.nanoTime();
+        initStates();
+        deserializeV();
 
         deserializeMaze();
-        long total = System.nanoTime();
+
         int[] agentSuccess = new int[3];
         int[] hung = new int[3];
         int[] predatorSuccess = new int[3];
@@ -450,7 +446,7 @@ public class Vstar {
     public static void main(String[] args) {
         long total = System.nanoTime();
         train();
-        run();
+//        run();
         long endTime = System.nanoTime();
         long duration = (endTime - total) / (long) Math.pow(10, 9);
         System.out.println("Total Time: " + duration);

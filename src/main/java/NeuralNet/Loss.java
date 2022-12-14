@@ -7,12 +7,12 @@ import java.util.List;
 public class Loss implements Serializable {
 
     //    calculates error for visualization
-    public static double mse(double[] y_true, List<Double> y_pred) {
-        int n = y_true.length;
+    public static double mse(double[] original, List<Double> prediction) {
+        int n = original.length;
         double sum = 0.0;
         double diff;
         for (int x = 0; x < n; x++) {
-            diff = y_true[x] - y_pred.get(x);
+            diff = original[x] - prediction.get(x);
             sum += Math.pow(diff, 2);
         }
         double mse = sum / n;
@@ -20,10 +20,10 @@ public class Loss implements Serializable {
     }
 
     //   calculates error for back propagation init
-    public static Matrix msePrime(Matrix y_true, Matrix y_pred) {
-        y_pred.subtract(y_true);
-        Matrix temp = Matrix.multiply(y_pred, 2);
-        double size = y_true.rows * y_true.cols;
+    public static Matrix gradient(Matrix original, Matrix prediction) {
+        prediction.subtract(original);
+        Matrix temp = Matrix.multiply(prediction, 2);
+        double size = original.rows * original.cols;
         temp.divide(size);
         return temp;
     }

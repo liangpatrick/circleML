@@ -42,8 +42,7 @@ public class Main {
         int[] agentFail = new int[5];
         int[] preyDeath = new int[5];
         double[] preySurveyRate = new double[5];
-        double[] predatorSurveyRate = new double[5];
-
+        int[] steps = new int[5];
         long total = System.nanoTime();
         deserializeMaze();
 
@@ -65,7 +64,7 @@ public class Main {
 //                    hung
                 hung[1]++;
             }
-
+            steps[1] += resultOne.steps;
             Result resultTwo = CompleteInformation.agentTwo(maze);
             if (resultTwo.predatorCatchesAgent) {
 //                    predator catches agent
@@ -83,7 +82,7 @@ public class Main {
 //                    hung
                 hung[2]++;
             }
-
+            steps[2] += resultTwo.steps;
             Result resultThree = PartialPrey.agentThree(maze);
             if (resultThree.predatorCatchesAgent) {
 //                    predator catches agent
@@ -102,7 +101,7 @@ public class Main {
                 hung[3]++;
             }
             preySurveyRate[3] += resultThree.surveyRate;
-
+            steps[3] += resultThree.steps;
             Result resultFour = PartialPrey.agentFour(maze);
             if (resultFour.predatorCatchesAgent) {
 //                    predator catches agent
@@ -121,7 +120,7 @@ public class Main {
                 hung[4]++;
             }
             preySurveyRate[4] += resultFour.surveyRate;
-
+            steps[4] += resultFour.steps;
 
             long endTime = System.nanoTime();
             long duration = (endTime - total) / (long) Math.pow(10, 9);
@@ -139,10 +138,9 @@ public class Main {
             System.out.println("Agent Catches Prey: " + agentSuccess[x]);
             System.out.println("Prey Runs into Agent: " + preyDeath[x]);
             System.out.println("Agent Runs into Predator: " + agentFail[x]);
+            System.out.println("Average number of steps: " + steps[x] / 3000.0);
             System.out.println("Average Prey Survey Rate: " + ((preySurveyRate[x] / 3000.0) * 100));
-            System.out.println("Average Predator Survey Rate: " + ((predatorSurveyRate[x] / 3000.0) * 100));
             System.out.println("Hung out of Loss: " + (double) hung[x] / ((double) predatorSuccess[x] + agentFail[x] + hung[x]));
-            System.out.println("Predator Catches Agent: " + predatorSuccess[x]);
             System.out.println();
         }
 

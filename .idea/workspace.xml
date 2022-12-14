@@ -4,17 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="serialized stuff">
-      <change afterPath="$PROJECT_DIR$/v_complete" afterDir="false" />
+    <list default="true" id="020b6a04-879a-462e-b0ae-defc1914da27" name="Changes" comment="Finished Product">
+      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/ActivationLayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/FCLayer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Agents/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Environment/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Agents/CompleteInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Agents/CompleteInformation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Agents/Vstar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Agents/Vstar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Environment/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Environment/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/ActivationLayer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/FCLayer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/HiddenLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/HiddenLayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Layers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Layers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Loss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Loss.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Matrix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Network.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNet/mse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNet/Loss.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/v_complete" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +90,7 @@
       <workItem from="1669688014148" duration="160000" />
       <workItem from="1669688185489" duration="187853000" />
       <workItem from="1670395782225" duration="74545000" />
-      <workItem from="1670698572748" duration="87405000" />
+      <workItem from="1670698572748" duration="114875000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <created>1669688715959</created>
@@ -237,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670899841524</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Finished Product">
+      <created>1670954762694</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1670954762694</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,7 +284,8 @@
     <MESSAGE value="fix?" />
     <MESSAGE value="final?" />
     <MESSAGE value="serialized stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="serialized stuff" />
+    <MESSAGE value="Finished Product" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished Product" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

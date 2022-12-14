@@ -2,13 +2,17 @@ package NeuralNet;
 
 import java.io.Serializable;
 
-public class HiddenLayer extends Layers implements Serializable {
+public class HiddenLayer extends Matrix /*Layers*/ implements Serializable {
     Matrix weights;
     Matrix bias;
+    Matrix input;
+    Matrix output;
     boolean activation;
 
     //  Constructor to initialize fully connected layer
     public HiddenLayer(int inputSize, int outputSize, boolean activation) {
+        this.input = null;
+        this.output = null;
 //        arbitrary starting weights and arbitrary starting bias
         this.weights = new Matrix(inputSize, outputSize);
         this.bias = new Matrix(1, outputSize);
@@ -20,7 +24,7 @@ public class HiddenLayer extends Layers implements Serializable {
         this.input = input_m;
         this.output = Matrix.multiply(this.input, this.weights);
         this.output.rowAdd(this.bias);
-        if(this.activation)
+        if (this.activation)
             this.output = this.output.tanh();
         return this.output;
     }
@@ -35,7 +39,7 @@ public class HiddenLayer extends Layers implements Serializable {
         this.weights.subtract(Matrix.multiply(weightsError, learningRate));
         this.bias.subtract(Matrix.multiply(inputError, learningRate));
 
-        if(this.activation) {
+        if (this.activation) {
             Matrix temp = this.input.dtanh();
             temp.rowMultiply(error);
             return temp;

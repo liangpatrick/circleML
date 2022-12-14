@@ -64,17 +64,6 @@ public class Matrix implements Serializable {
 
 
 
-    //  add a double
-    public void add(double d) {
-        for (int x = 0; x < rows; x++)
-            for (int y = 0; y < cols; y++) {
-                this.m[x][y] += d;
-            }
-    }
-
-
-
-
     //    transforms array to matrix
     public static Matrix arrayToMatrix(double[] arr) {
         Matrix temp = new Matrix(1, arr.length);

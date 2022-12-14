@@ -1,8 +1,8 @@
 package NeuralNet;
 
-        import java.io.Serializable;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Network implements Serializable {
     //    stores all a layers
@@ -38,31 +38,30 @@ public class Network implements Serializable {
     }
 
     //    fit/train
-    public void fit(int[][] X, double[][] Y, int epochs, double learningRate) {
+    public void fit(int[][] states, double[][] values, int epochs, double learningRate) {
+        long total = System.nanoTime();
         for (int x = 0; x < epochs; x++) {
-            long total = System.nanoTime();
             double error = 0.0;
-            for (int y = 0; y < X.length; y++) {
+            for (int y = 0; y < states.length; y++) {
 //                initializes output
-                Matrix output = Matrix.arrayToMatrix(X[y]);
+                Matrix output = Matrix.arrayToMatrix(states[y]);
 //                forward propagation through all the hidden layers
                 for (HiddenLayer hiddenLayer : hiddenLayers) {
                     output = hiddenLayer.forwardPropagation(output);
                 }
 //                calculates error for display
-                error += Loss.mse(Y[y], output.toArray());
+                error += Loss.mse(values[y], output.toArray());
 
-//                calculates error for back propagation
-                Matrix errorPrime = Loss.gradient(Matrix.arrayToMatrix(Y[y]), output);
-//                errorPrime.print();
-//                  back propagation through all layers
+//                calculates gradient for back propagation
+                Matrix gradient = Loss.gradient(Matrix.arrayToMatrix(values[y]), output);
+//                  back propagation through all layers in reverse
                 for (int i = hiddenLayers.size() - 1; i >= 0; i--) {
                     HiddenLayer hiddenLayer = hiddenLayers.get(i);
-                    errorPrime = hiddenLayer.backwardPropagation(errorPrime, learningRate);
+                    gradient = hiddenLayer.backwardPropagation(gradient, learningRate);
                 }
 
             }
-            error /= X.length;
+            error /= states.length;
 
             long endTime = System.nanoTime();
             long duration = (endTime - total) / (long) Math.pow(10, 9);
@@ -71,31 +70,31 @@ public class Network implements Serializable {
     }
 
 
-    public void fitPartial(double[][] X, double[][] Y, int epochs, double learningRate) {
+    public void fitPartial(double[][] states, double[][] values, int epochs, double learningRate) {
+        long total = System.nanoTime();
         for (int x = 0; x < epochs; x++) {
-            long total = System.nanoTime();
+
             double error = 0.0;
-            for (int y = 0; y < X.length; y++) {
+            for (int y = 0; y < states.length; y++) {
 //                initializes output
-                Matrix output = Matrix.arrayToMatrix(X[y]);
+                Matrix output = Matrix.arrayToMatrix(states[y]);
 //                forward propagation through all the layers
                 for (HiddenLayer hiddenLayer : hiddenLayers) {
                     output = hiddenLayer.forwardPropagation(output);
                 }
 //                calculates error for display
-                error += Loss.mse(Y[y], output.toArray());
+                error += Loss.mse(values[y], output.toArray());
 
-//                calculates error for back propagation
-                Matrix errorPrime = Loss.gradient(Matrix.arrayToMatrix(Y[y]), output);
-//                errorPrime.print();
-//                  back propagation through all layers
+//                calculates gradient for back propagation
+                Matrix gradient = Loss.gradient(Matrix.arrayToMatrix(values[y]), output);
+//                  back propagation through all layers in reverse
                 for (int i = hiddenLayers.size() - 1; i >= 0; i--) {
                     HiddenLayer hiddenLayer = hiddenLayers.get(i);
-                    errorPrime = hiddenLayer.backwardPropagation(errorPrime, learningRate);
+                    gradient = hiddenLayer.backwardPropagation(gradient, learningRate);
                 }
 
             }
-            error /= X.length;
+            error /= states.length;
 
             long endTime = System.nanoTime();
             long duration = (endTime - total) / (long) Math.pow(10, 9);

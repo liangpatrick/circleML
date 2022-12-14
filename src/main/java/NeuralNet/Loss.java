@@ -21,6 +21,7 @@ public class Loss implements Serializable {
 
     //   calculates error for back propagation init
     public static Matrix gradient(Matrix original, Matrix prediction) {
+//        2/n * (orig - prediction)
         prediction.subtract(original);
         Matrix temp = Matrix.multiply(prediction, 2);
         double size = original.rows * original.cols;

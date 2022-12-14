@@ -331,13 +331,10 @@ public class Vstar {
                 double currUtil;
                 if (n.getCell() == predator.getCell() && n.getCell() != prey.getCell()) {
                     currUtil = Double.POSITIVE_INFINITY;
-                }
-                else if (Predator.bfs(n.getCell(), predator.getCell(), maze).size() == 2) {
+                } else if (Predator.bfs(n.getCell(), predator.getCell(), maze).size() == 2) {
                     currUtil = Double.POSITIVE_INFINITY;
-                }
-                else {
+                } else {
                     currUtil = netPartial.predictPartial(stateToHotPartial(new State(n.getCell(), prey.getCell(), predator.getCell()))).get(0);
-//                    System.out.println(currUtil);
                 }
                 if (value > currUtil) {
                     cell = n.getCell();
@@ -655,9 +652,7 @@ public class Vstar {
             return;
         }
 
-//        for(double[] state: statesPartial){
-//            System.out.println(netPartial.predictPartial(state).get(0));
-//        }
+
     }
 
     public static void train() {
@@ -672,11 +667,7 @@ public class Vstar {
         net.add(new HiddenLayer(150, 150, true));
         net.add(new HiddenLayer(150, 150, true));
         net.add(new HiddenLayer(150, 1, false));
-//        net.add(new FCLayer(150, 150));
-//        net.add(new ActivationLayer());
-//        net.add(new FCLayer(150, 150));
-//        net.add(new ActivationLayer());
-//        net.add(new FCLayer(150, 1));
+
 
         net.fit(states, values, 100, 0.0001);
 
@@ -697,13 +688,8 @@ public class Vstar {
         netPartial.add(new HiddenLayer(150, 150, true));
         netPartial.add(new HiddenLayer(150, 150, true));
         netPartial.add(new HiddenLayer(150, 1, false));
-//        net.add(new FCLayer(150, 150));
-//        net.add(new ActivationLayer());
-//        net.add(new FCLayer(150, 150));
-//        net.add(new ActivationLayer());
-//        net.add(new FCLayer(150, 1));
 
-        netPartial.fitPartial(statesPartial, values, 100, 0.0005);
+        netPartial.fitPartial(statesPartial, values, 100, 0.00005);
 
         serializeVpartial();
 
@@ -715,7 +701,7 @@ public class Vstar {
 //        keeps track of iter
         long total = System.nanoTime();
         initStates();
-//        deserializeV();
+        deserializeV();
         deserializeVpartial();
         deserializeMaze();
 
@@ -727,26 +713,26 @@ public class Vstar {
         int[] steps = new int[3];
         double[] preySurveyRate = new double[3];
         for (int x = 0; x < 3000; x++) {
-//            Result resultOne = complete(maze);
-//            if (resultOne.predatorCatchesAgent) {
-////                    predator catches agent
-//                predatorSuccess[1]++;
-////                System.out.println("DEATH");
-//
-//            } else if (resultOne.agentCatchesPrey) {
-////                    agent catches prey
-//                agentSuccess[1]++;
-//            } else if (resultOne.agentRunsPredator) {
-////                    agent runs into agent
-//                agentFail[1]++;
-//            } else if (resultOne.preyRunsAgent) {
-////                    prey runs into agent
-//                preyDeath[1]++;
-//            } else if (resultOne.hung > 0) {
-////                    hung
-//                hung[1]++;
-//            }
-//            steps[1] += resultOne.steps;
+            Result resultOne = complete(maze);
+            if (resultOne.predatorCatchesAgent) {
+//                    predator catches agent
+                predatorSuccess[1]++;
+//                System.out.println("DEATH");
+
+            } else if (resultOne.agentCatchesPrey) {
+//                    agent catches prey
+                agentSuccess[1]++;
+            } else if (resultOne.agentRunsPredator) {
+//                    agent runs into agent
+                agentFail[1]++;
+            } else if (resultOne.preyRunsAgent) {
+//                    prey runs into agent
+                preyDeath[1]++;
+            } else if (resultOne.hung > 0) {
+//                    hung
+                hung[1]++;
+            }
+            steps[1] += resultOne.steps;
 
             Result resultTwo = partial(maze);
             if (resultTwo.predatorCatchesAgent) {
@@ -795,9 +781,9 @@ public class Vstar {
 
     public static void main(String[] args) {
         long total = System.nanoTime();
-//        train();
+        train();
         trainPartial();
-//        run();
+        run();
         long endTime = System.nanoTime();
         long duration = (endTime - total) / (long) Math.pow(10, 9);
         System.out.println("Total Time: " + duration);
